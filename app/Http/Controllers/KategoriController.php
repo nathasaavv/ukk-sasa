@@ -9,7 +9,8 @@ class KategoriController extends Controller
 {
     public function index()
     {
-        return view('kategori.index');
+        $kategori = Kategori::all();
+        return view('kategori.index', compact('kategori'));
     }
 
     public function create()
@@ -25,8 +26,22 @@ class KategoriController extends Controller
 
         ]);
 
+
         Kategori::create($validate);
 
         return redirect()->route('kategori.index')->with('success', 'Kategori berhasil ditambahkan');
+    }
+
+    public function show($id)
+    {
+        
+        $show = Kategori::all();
+        return view('kategori.show', compact('show'));
+    }
+
+    public function destroy($id)
+    {
+        Kategori::destroy($id);
+        return redirect()->route('kategori.index')->with('success', 'Kategori berhasil dihapus');
     }
 }

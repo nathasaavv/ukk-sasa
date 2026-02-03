@@ -64,7 +64,6 @@
                         </select>
                     </div>
                 </div>
-
                 <table id="kategoriTable">
                     <thead>
                         <tr>
@@ -76,157 +75,58 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>1</td>
-                            <td>
-                                <strong>Fasilitas Sekolah</strong>
-                            </td>
-                            <td>
-                                <span class="badge done">8 aspirasi</span>
-                            </td>
-                            <td>15 Jan 2026</td>
-                            <td>
-                                <div style="display:flex;gap:8px;">
-                                    <a href="#" 
-                                       class="btn btn-sm btn-info" 
-                                       style="padding:6px 12px;background:#0ea5e9;color:white;text-decoration:none;border-radius:6px;font-size:12px;">
-                                        Lihat
-                                    </a>
-                                    <a href="#" 
-                                       class="btn btn-sm btn-warning" 
-                                       style="padding:6px 12px;background:#f59e0b;color:white;text-decoration:none;border-radius:6px;font-size:12px;">
-                                        Edit
-                                    </a>
-                                    <button type="button" 
-                                            class="btn btn-sm btn-danger" 
-                                            style="padding:6px 12px;background:#ef4444;color:white;border:none;border-radius:6px;font-size:12px;cursor:pointer;"
-                                            onclick="return confirm('Apakah Anda yakin ingin menghapus kategori ini?')">
-                                        Hapus
-                                    </button>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>2</td>
-                            <td>
-                                <strong>Kegiatan Ekstrakurikuler</strong>
-                            </td>
-                            <td>
-                                <span class="badge done">5 aspirasi</span>
-                            </td>
-                            <td>20 Jan 2026</td>
-                            <td>
-                                <div style="display:flex;gap:8px;">
-                                    <a href="#" 
-                                       class="btn btn-sm btn-info" 
-                                       style="padding:6px 12px;background:#0ea5e9;color:white;text-decoration:none;border-radius:6px;font-size:12px;">
-                                        Lihat
-                                    </a>
-                                    <a href="#" 
-                                       class="btn btn-sm btn-warning" 
-                                       style="padding:6px 12px;background:#f59e0b;color:white;text-decoration:none;border-radius:6px;font-size:12px;">
-                                        Edit
-                                    </a>
-                                    <button type="button" 
-                                            class="btn btn-sm btn-danger" 
-                                            style="padding:6px 12px;background:#ef4444;color:white;border:none;border-radius:6px;font-size:12px;cursor:pointer;"
-                                            onclick="return confirm('Apakah Anda yakin ingin menghapus kategori ini?')">
-                                        Hapus
-                                    </button>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>3</td>
-                            <td>
-                                <strong>Lingkungan Sekolah</strong>
-                            </td>
-                            <td>
-                                <span class="badge done">7 aspirasi</span>
-                            </td>
-                            <td>25 Jan 2026</td>
-                            <td>
-                                <div style="display:flex;gap:8px;">
-                                    <a href="#" 
-                                       class="btn btn-sm btn-info" 
-                                       style="padding:6px 12px;background:#0ea5e9;color:white;text-decoration:none;border-radius:6px;font-size:12px;">
-                                        Lihat
-                                    </a>
-                                    <a href="#" 
-                                       class="btn btn-sm btn-warning" 
-                                       style="padding:6px 12px;background:#f59e0b;color:white;text-decoration:none;border-radius:6px;font-size:12px;">
-                                        Edit
-                                    </a>
-                                    <button type="button" 
-                                            class="btn btn-sm btn-danger" 
-                                            style="padding:6px 12px;background:#ef4444;color:white;border:none;border-radius:6px;font-size:12px;cursor:pointer;"
-                                            onclick="return confirm('Apakah Anda yakin ingin menghapus kategori ini?')">
-                                        Hapus
-                                    </button>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>4</td>
-                            <td>
-                                <strong>Prestasi Siswa</strong>
-                            </td>
-                            <td>
-                                <span class="badge done">3 aspirasi</span>
-                            </td>
-                            <td>28 Jan 2026</td>
-                            <td>
-                                <div style="display:flex;gap:8px;">
-                                    <a href="#" 
-                                       class="btn btn-sm btn-info" 
-                                       style="padding:6px 12px;background:#0ea5e9;color:white;text-decoration:none;border-radius:6px;font-size:12px;">
-                                        Lihat
-                                    </a>
-                                    <a href="#" 
-                                       class="btn btn-sm btn-warning" 
-                                       style="padding:6px 12px;background:#f59e0b;color:white;text-decoration:none;border-radius:6px;font-size:12px;">
-                                        Edit
-                                    </a>
-                                    <button type="button" 
-                                            class="btn btn-sm btn-danger" 
-                                            style="padding:6px 12px;background:#ef4444;color:white;border:none;border-radius:6px;font-size:12px;cursor:pointer;"
-                                            onclick="return confirm('Apakah Anda yakin ingin menghapus kategori ini?')">
-                                        Hapus
-                                    </button>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>5</td>
-                            <td>
-                                <strong>Program Kerja</strong>
-                            </td>
-                            <td>
-                                <span class="badge pending">0 aspirasi</span>
-                            </td>
-                            <td>30 Jan 2026</td>
-                            <td>
-                                <div style="display:flex;gap:8px;">
-                                    <a href="#" 
-                                       class="btn btn-sm btn-info" 
-                                       style="padding:6px 12px;background:#0ea5e9;color:white;text-decoration:none;border-radius:6px;font-size:12px;">
-                                        Lihat
-                                    </a>
-                                    <a href="#" 
-                                       class="btn btn-sm btn-warning" 
-                                       style="padding:6px 12px;background:#f59e0b;color:white;text-decoration:none;border-radius:6px;font-size:12px;">
-                                        Edit
-                                    </a>
-                                    <button type="button" 
-                                            class="btn btn-sm btn-danger" 
-                                            style="padding:6px 12px;background:#ef4444;color:white;border:none;border-radius:6px;font-size:12px;cursor:pointer;"
-                                            onclick="return confirm('Apakah Anda yakin ingin menghapus kategori ini?')">
-                                        Hapus
-                                    </button>
-                                </div>
-                            </td>
-                        </tr>
-                    </tbody>
+    @forelse ($kategori as $item)
+    <tr>
+        <td>{{ $loop->iteration }}</td>
+
+        <td>
+            <strong>{{ $item->nama }}</strong>
+        </td>
+
+        <td>
+            <span class="badge {{ $item->aspirasi_count ?? 0 > 0 ? 'done' : 'pending' }}">
+                {{ $item->aspirasi_count ?? 0 }} aspirasi
+            </span>
+        </td>
+
+        <td>
+           
+        </td>
+
+        <td>
+            <div style="display:flex;gap:8px;">
+                <a href="{{ route('kategori.show', $item->id) }}"
+                   style="padding:6px 12px;background:#0ea5e9;color:white;text-decoration:none;border-radius:6px;font-size:12px;">
+                    Lihat
+                </a>
+
+                <a href="#"
+                   style="padding:6px 12px;background:#f59e0b;color:white;text-decoration:none;border-radius:6px;font-size:12px;">
+                    Edit
+                </a>
+
+                <form action="{{ route('kategori.destroy', $item->id) }}"
+                      method="POST"
+                      onsubmit="return confirm('Apakah Anda yakin ingin menghapus kategori ini?')">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit"
+                            style="padding:6px 12px;background:#ef4444;color:white;border:none;border-radius:6px;font-size:12px;cursor:pointer;">
+                        Hapus
+                    </button>
+                </form>
+            </div>
+        </td>
+    </tr>
+    @empty
+    <tr>
+        <td colspan="5" style="text-align:center;padding:20px;color:#64748b;">
+            Belum ada kategori
+        </td>
+    </tr>
+    @endforelse
+</tbody>
+
                 </table>
             </div>
         </section>

@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Tambah Kategori')
+@section('title', 'Edit Kategori')
 
 @section('header')
     <div style="display:flex;align-items:center;gap:15px;">
@@ -8,7 +8,7 @@
             <span>←</span>
             <span>Kembali</span>
         </a>
-        <h1>Tambah Kategori</h1>
+        <h1>Edit Kategori</h1>
     </div>
 @endsection
 
@@ -17,8 +17,8 @@
         <!-- Form Container -->
         <div class="form-container">
             <div style="margin-bottom:25px;">
-                <h2 style="font-size:20px;color:#1e293b;margin-bottom:8px;">Form Tambah Kategori</h2>
-                <p style="color:#64748b;font-size:14px;">Isi data kategori baru di bawah ini</p>
+                <h2 style="font-size:20px;color:#1e293b;margin-bottom:8px;">Form Edit Kategori</h2>
+                <p style="color:#64748b;font-size:14px;">Perbarui data kategori di bawah ini</p>
             </div>
 
             <!-- Flash Messages -->
@@ -50,8 +50,9 @@
             </div>
             @endif
 
-            <form action="{{ route('kategori.store') }}" method="POST" style="display:flex;flex-direction:column;gap:24px;">
+            <form action="{{ route('kategori.update', $kategori->id) }}" method="POST" style="display:flex;flex-direction:column;gap:24px;">
                 @csrf
+                @method('PUT')
 
                 <div class="form-group">
                     <label for="nama">Nama Kategori <span style="color:#ef4444;">*</span></label>
@@ -60,7 +61,7 @@
                            name="nama" 
                            class="form-control"
                            placeholder="Masukkan nama kategori" 
-                           value="{{ old('nama') }}"
+                           value="{{ old('nama', $kategori->nama) }}"
                            required>
                     <small style="color:#64748b;font-size:12px;margin-top:4px;display:block;">
                         Contoh: Fasilitas Sekolah, Kegiatan Ekstrakurikuler, dll
@@ -73,7 +74,7 @@
                               name="ket_kategori" 
                               class="form-control"
                               rows="4" 
-                              placeholder="Tambahkan keterangan untuk kategori ini...">{{ old('ket_kategori') }}</textarea>
+                              placeholder="Tambahkan keterangan untuk kategori ini...">{{ old('ket_kategori', $kategori->ket_kategori) }}</textarea>
                     <small style="color:#64748b;font-size:12px;margin-top:4px;display:block;">
                         Opsional: Berikan deskripsi detail tentang kategori ini
                     </small>
@@ -86,7 +87,7 @@
                             <input type="radio" 
                                    name="status" 
                                    value="1" 
-                                   {{ old('status', '1') == '1' ? 'checked' : '' }}
+                                   {{ old('status', $kategori->status) == '1' ? 'checked' : '' }}
                                    style="width:18px;height:18px;">
                             <span style="color:#1e293b;font-size:14px;">Aktif</span>
                         </label>
@@ -94,13 +95,13 @@
                             <input type="radio" 
                                    name="status" 
                                    value="0" 
-                                   {{ old('status') == '0' ? 'checked' : '' }}
+                                   {{ old('status', $kategori->status) == '0' ? 'checked' : '' }}
                                    style="width:18px;height:18px;">
                             <span style="color:#1e293b;font-size:14px;">Tidak Aktif</span>
                         </label>
                     </div>
                     <small style="color:#64748b;font-size:12px;margin-top:4px;display:block;">
-                        Pilih status untuk kategori ini. Default: Aktif
+                        Pilih status untuk kategori ini
                     </small>
                 </div>
 
@@ -111,7 +112,7 @@
                         <span>Batal</span>
                     </button>
                     <button type="submit" class="btn btn-primary">
-                        <span>Simpan Kategori</span>
+                        <span>Perbarui Kategori</span>
                     </button>
                 </div>
             </form>
@@ -119,28 +120,53 @@
 
         <!-- Info Sidebar -->
         <div>
+            <!-- Current Info Card -->
+            <div class="card" style="background:#f0fdf4;border:1px solid #bbf7d0;margin-bottom:20px;">
+                <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px;">
+                    <div style="width:40px;height:40px;background:#22c55e;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:18px;">📝</div>
+                    <h3 style="color:#166534;font-size:16px;margin:0;">Informasi Saat Ini</h3>
+                </div>
+                <div style="color:#15803d;font-size:14px;line-height:1.6;">
+                    <div style="margin-bottom:12px;">
+                        <strong style="color:#166534;">Nama:</strong> {{ $kategori->nama }}
+                    </div>
+                    <div style="margin-bottom:12px;">
+                        <strong style="color:#166534;">Status:</strong> 
+                        <span class="badge {{ $kategori->status ? 'done' : 'pending' }}" style="font-size:12px;">
+                            {{ $kategori->status ? 'Aktif' : 'Tidak Aktif' }}
+                        </span>
+                    </div>
+                    <div style="margin-bottom:12px;">
+                        <strong style="color:#166534;">Dibuat:</strong> {{ $kategori->created_at->format('d M Y') }}
+                    </div>
+                    <div>
+                        <strong style="color:#166534;">ID:</strong> #{{ $kategori->id }}
+                    </div>
+                </div>
+            </div>
+
             <!-- Tips Card -->
             <div class="card" style="background:#f0f9ff;border:1px solid #bae6fd;margin-bottom:20px;">
                 <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px;">
                     <div style="width:40px;height:40px;background:#0ea5e9;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:18px;">💡</div>
-                    <h3 style="color:#0369a1;font-size:16px;margin:0;">Tips Membuat Kategori</h3>
+                    <h3 style="color:#0369a1;font-size:16px;margin:0;">Tips Edit Kategori</h3>
                 </div>
                 <ul style="list-style:none;color:#0c4a6e;font-size:14px;line-height:1.6;margin:0;padding:0;">
                     <li style="margin-bottom:12px;padding-left:20px;position:relative;">
                         <span style="position:absolute;left:0;color:#0ea5e9;">•</span>
-                        Buat nama kategori yang jelas dan mudah dipahami
+                        Pastikan nama kategori tetap jelas dan deskriptif
                     </li>
                     <li style="margin-bottom:12px;padding-left:20px;position:relative;">
                         <span style="position:absolute;left:0;color:#0ea5e9;">•</span>
-                        Hindari nama yang terlalu panjang atau rumit
+                        Perbarui keterangan jika ada perubahan penting
                     </li>
                     <li style="margin-bottom:12px;padding-left:20px;position:relative;">
                         <span style="position:absolute;left:0;color:#0ea5e9;">•</span>
-                        Pertimbangkan kategori yang sering dibutuhkan siswa
+                        Non-aktifkan kategori jika tidak lagi digunakan
                     </li>
                     <li style="padding-left:20px;position:relative;">
                         <span style="position:absolute;left:0;color:#0ea5e9;">•</span>
-                        Contoh: Fasilitas, Akademik, Ekstrakurikuler, dll
+                        Simpan perubahan setelah melakukan edit
                     </li>
                 </ul>
             </div>
@@ -151,11 +177,11 @@
                 <div style="display:flex;flex-direction:column;gap:12px;">
                     <div style="display:flex;justify-content:space-between;align-items:center;padding:12px;background:#f8fafc;border-radius:8px;">
                         <span style="color:#64748b;font-size:14px;">Total Kategori</span>
-                        <strong style="color:#1e293b;font-size:16px;">5</strong>
+                        <strong style="color:#1e293b;font-size:16px;">{{ $kategori->count() }}</strong>
                     </div>
                     <div style="display:flex;justify-content:space-between;align-items:center;padding:12px;background:#f8fafc;border-radius:8px;">
                         <span style="color:#64748b;font-size:14px;">Kategori Aktif</span>
-                        <strong style="color:#1e293b;font-size:16px;">4</strong>
+                        <strong style="color:#1e293b;font-size:16px;">{{$kategori->where('status', 1)->count()}}</strong>
                     </div>
                     <div style="display:flex;justify-content:space-between;align-items:center;padding:12px;background:#f8fafc;border-radius:8px;">
                         <span style="color:#64748b;font-size:14px;">Total Aspirasi</span>
@@ -199,7 +225,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         
         // Show loading state
-        submitBtn.innerHTML = '<span>⏳</span><span>Menyimpan...</span>';
+        submitBtn.innerHTML = '<span>⏳</span><span>Memperbarui...</span>';
         submitBtn.disabled = true;
         submitBtn.style.opacity = '0.7';
     });
@@ -211,7 +237,7 @@ document.addEventListener('DOMContentLoaded', function() {
     if (textarea) {
         const counter = document.createElement('div');
         counter.style.cssText = 'text-align:right;color:#64748b;font-size:12px;margin-top:4px;';
-        counter.textContent = '0 / ' + maxLength;
+        counter.textContent = (textarea.value.length) + ' / ' + maxLength;
         textarea.parentNode.appendChild(counter);
         
         textarea.addEventListener('input', function() {

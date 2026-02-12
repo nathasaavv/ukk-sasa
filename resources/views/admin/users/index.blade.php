@@ -8,7 +8,7 @@
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">
         <div>
             <h2 style="margin:0;">User</h2>
-            <p style="color:#64748b;margin:4px 0 0;">Kelola akun pengguna aplikasi</p>
+            <p class="text-muted" style="margin:4px 0 0;">Kelola akun pengguna aplikasi</p>
         </div>
         <div>
             <a href="{{ route('admin.users.create') }}" class="btn btn-primary">Tambah User</a>

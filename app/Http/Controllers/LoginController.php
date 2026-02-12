@@ -41,7 +41,7 @@ class LoginController extends Controller
 
             if (Auth::attempt($credentials)) {
                 $request->session()->regenerate();
-                return redirect('/dashboard');
+                return redirect('/dashboard')->with('success', 'Selamat datang, ' . Auth::user()->name . '!');
             }
 
             return back()->withErrors(['email' => 'Email atau password salah'])->withInput();
@@ -62,7 +62,7 @@ class LoginController extends Controller
         Auth::login($user);
         $request->session()->regenerate();
 
-        return redirect('/dashboard');
+        return redirect('/dashboard')->with('success', 'Selamat datang, ' . $user->name . '!');
     }
 
 

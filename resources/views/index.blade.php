@@ -81,19 +81,19 @@
     <div class="cards" style="margin-top:30px;">
         <div class="card">
             <h3>📝 Buat Aspirasi Baru</h3>
-            <p style="color:#64748b;font-size:14px;margin:15px 0;">Tambahkan aspirasi baru dari siswa</p>
+            <p class="text-muted" style="font-size:14px;margin:15px 0;">Tambahkan aspirasi baru dari siswa</p>
             <a href="#" class="btn btn-primary">Buat Sekarang</a>
         </div>
 
         <div class="card">
             <h3>📁 Kelola Kategori</h3>
-            <p style="color:#64748b;font-size:14px;margin:15px 0;">Atur kategori aspirasi</p>
+            <p class="text-muted" style="font-size:14px;margin:15px 0;">Atur kategori aspirasi</p>
             <a href="{{ route('kategori.index') }}" class="btn btn-secondary">Kelola</a>
         </div>
 
         <div class="card">
             <h3>📊 Laporan Bulanan</h3>
-            <p style="color:#64748b;font-size:14px;margin:15px 0;">Download laporan bulanan</p>
+            <p class="text-muted" style="font-size:14px;margin:15px 0;">Download laporan bulanan</p>
             <a href="#" class="btn btn-success">Download</a>
         </div>
     </div>

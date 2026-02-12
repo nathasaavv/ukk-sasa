@@ -12,8 +12,33 @@
             font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
+        :root{
+            --bg: #f4f7fb;
+            --surface: #ffffff;
+            --muted: #64748b;
+            --text: #1e293b;
+            --sidebar-bg: linear-gradient(180deg,#1e293b,#0f172a);
+            --card-border: #f1f5f9;
+            --primary: #2563eb;
+            --primary-600: #1d4ed8;
+            --success-from: #16a34a;
+            --success-to: #10b981;
+            --toast-text: #ffffff;
+        }
         body{
-            background:#f4f7fb;
+            background:var(--bg);
+            color:var(--text);
+            transition:background .2s ease,color .2s ease;
+        }
+
+        /* Dark mode overrides (toggle .dark on <html> or <body>) */
+        .dark{
+            --bg: #0b1220;
+            --surface: #0f1724;
+            --muted: #9ca3af;
+            --text: #e6eef8;
+            --sidebar-bg: linear-gradient(180deg,#071029,#041227);
+            --card-border: rgba(255,255,255,0.04);
         }
 
         .layout{
@@ -24,14 +49,14 @@
         /* Sidebar */
         .sidebar{
             width:260px;
-            background:linear-gradient(180deg,#1e293b,#0f172a);
+            background:var(--sidebar-bg);
             color:white;
             padding:20px;
             position:fixed;
             height:100vh;
             overflow-y:auto;
             z-index:1000;
-            transition: all 0.3s ease;
+            transition: width 220ms ease, background .2s ease;
         }
 
         .logo{
@@ -57,9 +82,15 @@
             color:#cbd5e1;
             text-decoration:none;
             border-radius:10px;
-            transition:.3s;
+            transition:background .18s ease,transform .18s ease;
             position:relative;
+            justify-content:flex-start;
         }
+        .menu a span:last-child{display:inline-block}
+        .menu a span:first-child{font-size:18px}
+        .menu a[title]{cursor:default} /* keep title tooltips */
+
+
 
         .menu a::before{
             content: "";
@@ -139,18 +170,18 @@
 
         /* Main */
         .main{
-            margin-left:260px;
+            margin-left:260px; /* match default sidebar */
             width:calc(100% - 260px);
-            transition: all 0.3s ease;
+            transition: margin-left 220ms ease, width 220ms ease;
         }
 
         .header{
-            background:white;
-            padding:20px 30px;
+            background:var(--surface);
+            padding:22px 36px; /* slightly more breathing room */
             display:flex;
             justify-content:space-between;
             align-items:center;
-            box-shadow:0 4px 20px rgba(0,0,0,.05);
+            box-shadow:0 6px 28px rgba(2,6,23,.06);
             position:sticky;
             top:0;
             z-index:100;
@@ -158,7 +189,7 @@
 
         .header h1{
             font-size:24px;
-            color:#1e293b;
+            color:var(--text);
             font-weight:700;
         }
 
@@ -166,21 +197,24 @@
             display:flex;
             align-items:center;
             gap:15px;
+            position:relative; /* for profile dropdown */
         }
 
         .profile{
             display:flex;
             align-items:center;
             gap:12px;
-            padding:8px 12px;
-            background:#f8fafc;
-            border-radius:10px;
+            padding:10px 14px;
+            background:var(--surface);
+            border-radius:12px;
             cursor:pointer;
-            transition: all 0.3s ease;
+            transition: all 0.18s ease;
+            border:1px solid transparent;
         }
 
         .profile:hover{
-            background:#e2e8f0;
+            transform:translateY(-2px);
+            box-shadow:0 8px 22px rgba(2,6,23,.06);
         }
 
         .avatar{
@@ -203,16 +237,51 @@
         .profile-name{
             font-size:14px;
             font-weight:600;
-            color:#1e293b;
+            color:var(--text);
         }
 
         .profile-role{
             font-size:12px;
-            color:#64748b;
+            color:var(--muted);
         }
 
+        /* utility text colors */
+        .text-muted{ color: var(--muted); }
+        .text-body{ color: var(--text); }
+
+        /* Profile dropdown */
+        .profile-menu{
+            position:absolute;
+            right:8px;
+            top:calc(100% + 10px);
+            min-width:180px;
+            background:var(--surface);
+            border-radius:10px;
+            box-shadow:0 12px 36px rgba(2,6,23,.12);
+            padding:8px;
+            display:none;
+            flex-direction:column;
+            gap:6px;
+            z-index:1500;
+            border:1px solid var(--card-border);
+        }
+
+        .profile-menu.show{display:flex}
+        .profile-menu-item{background:transparent;border:none;padding:8px 10px;text-align:left;border-radius:8px;cursor:pointer;color:var(--text);text-decoration:none}
+        .profile-menu-item:hover{background:rgba(2,6,23,.04)}
+
+        /* Theme toggle */
+        #themeToggle{padding:8px 10px;border-radius:8px;border:1px solid var(--card-border);background:var(--surface);color:var(--text);cursor:pointer}
+        #themeToggle[aria-pressed="true"]{background:linear-gradient(90deg,var(--primary),var(--primary-600));color:#fff}
+        .dark #themeToggle{background:transparent;border-color:rgba(255,255,255,0.06);color:var(--text)}
+
+        /* Dark mode surface adjustments */
+        .dark .profile-menu{background:rgba(255,255,255,0.02);border-color:var(--card-border)}
+        .dark #themeToggle{background:transparent}
+
+
         .content{
-            padding:30px;
+            padding:36px; /* more generous spacing */
         }
 
         /* Buttons */
@@ -289,23 +358,24 @@
         /* Cards */
         .cards{
             display:grid;
-            grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-            gap:20px;
-            margin-bottom:30px;
+            grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+            gap:28px; /* increased gap for airy layout */
+            margin-bottom:36px;
         }
 
         .card{
-            background:white;
-            padding:20px;
+            background:var(--surface);
+            padding:24px; /* a bit more padding */
             border-radius:16px;
-            box-shadow:0 10px 25px rgba(0,0,0,.05);
-            transition: all 0.3s ease;
-            border:1px solid #f1f5f9;
+            box-shadow:0 8px 30px rgba(2,6,23,.06);
+            transition: all 0.28s ease;
+            border:1px solid var(--card-border);
+            min-height:92px;
         }
 
         .card:hover{
             transform: translateY(-5px);
-            box-shadow:0 20px 40px rgba(0,0,0,.1);
+            box-shadow:0 20px 40px rgba(2,6,23,.09);
         }
 
         .card-header{
@@ -347,7 +417,7 @@
 
         .card h3{
             font-size:14px;
-            color:#64748b;
+            color:var(--muted);
             font-weight:500;
             margin-bottom:8px;
         }
@@ -355,9 +425,15 @@
         .card-value{
             font-size:28px;
             font-weight:700;
-            color:#1e293b;
+            color:var(--text);
             margin-bottom:8px;
         }
+
+        /* Dark-mode tweaks for icons (better contrast on dark bg) */
+        .dark .card-icon.blue{background:rgba(37,99,235,0.08)}
+        .dark .card-icon.green{background:rgba(16,163,127,0.06)}
+        .dark .card-icon.yellow{background:rgba(217,119,6,0.05)}
+        .dark .card-icon.purple{background:rgba(147,51,234,0.05)}
 
         .card-change{
             font-size:12px;
@@ -377,12 +453,13 @@
 
         /* Table */
         .table-container{
-            background:white;
+            background:var(--surface);
             border-radius:16px;
-            box-shadow:0 10px 25px rgba(0,0,0,.05);
+            box-shadow:0 10px 25px rgba(2,6,23,.05);
             overflow:hidden;
-            border:1px solid #f1f5f9;
+            border:1px solid var(--card-border);
         }
+        .dark .table-container{background:rgba(255,255,255,0.01);border-color:rgba(255,255,255,0.03)}
 
         .table-header{
             padding:20px 25px;
@@ -397,7 +474,7 @@
         .table-title{
             font-size:18px;
             font-weight:600;
-            color:#1e293b;
+            color:var(--text);
         }
 
         .table-actions{
@@ -444,24 +521,25 @@
         }
 
         table th{
-            background:#f8fafc;
+            background:var(--surface);
             font-weight:600;
-            color:#374151;
+            color:var(--muted);
             text-align:left;
             padding:12px 16px;
             font-size:14px;
-            border-bottom:1px solid #e5e7eb;
+            border-bottom:1px solid var(--card-border);
         }
 
         table td{
             padding:12px 16px;
-            border-bottom:1px solid #f1f5f9;
+            border-bottom:1px solid var(--card-border);
             font-size:14px;
-            color:#374151;
+            color:var(--muted);
+            background:transparent;
         }
 
         table tbody tr:hover{
-            background:#f8fafc;
+            background:rgba(2,6,23,.03);
         }
 
         .badge{
@@ -477,13 +555,23 @@
         .badge.processing{background:#dbeafe;color:#1e40af;}
         .badge.cancelled{background:#fecaca;color:#991b1b;}
 
+        /* Dark-mode table / badges */
+        .dark table th{background:transparent;color:var(--muted);border-color:rgba(255,255,255,0.04)}
+        .dark table td{color:var(--muted);border-color:rgba(255,255,255,0.04)}
+        .dark table tbody tr:hover{background:rgba(255,255,255,0.02)}
+        .dark .badge{opacity:.95}
+        .dark .badge.pending{background:rgba(255,248,220,0.06);color:#f59e0b}
+        .dark .badge.done{background:rgba(16,185,129,0.06);color:#34d399}
+        .dark .badge.processing{background:rgba(59,130,246,0.06);color:#60a5fa}
+        .dark .badge.cancelled{background:rgba(254,202,202,0.04);color:#fb7185}
+
         /* Form */
         .form-container{
-            background:white;
+            background:var(--surface);
             border-radius:16px;
-            box-shadow:0 10px 25px rgba(0,0,0,.05);
+            box-shadow:0 8px 24px rgba(2,6,23,.06);
             padding:25px;
-            border:1px solid #f1f5f9;
+            border:1px solid var(--card-border);
         }
 
         .form-group{
@@ -493,7 +581,7 @@
         .form-group label{
             display:block;
             margin-bottom:8px;
-            color:#374151;
+            color:var(--muted);
             font-weight:500;
             font-size:14px;
         }
@@ -501,22 +589,26 @@
         .form-control{
             width:100%;
             padding:10px 14px;
-            border:1px solid #e5e7eb;
+            border:1px solid var(--card-border);
             border-radius:8px;
             font-size:14px;
             transition: all 0.3s ease;
+            background:transparent;
+            color:var(--text);
         }
 
         .form-control:focus{
             outline:none;
-            border-color:#2563eb;
-            box-shadow:0 0 0 3px rgba(37, 99, 235, 0.1);
+            border-color:var(--primary);
+            box-shadow:0 0 0 3px rgba(37, 99, 235, 0.08);
         }
 
         textarea.form-control{
             resize:vertical;
             min-height:100px;
         }
+
+        .dark .form-control{background:rgba(255,255,255,0.02);color:var(--text);border-color:rgba(255,255,255,0.04)}
 
         /* Alert */
         .alert{
@@ -546,11 +638,36 @@
             color:#d97706;
         }
 
+        /* Toast (global) */
+        .toast{
+            position:fixed;
+            right:24px;
+            top:24px;
+            min-width:260px;
+            max-width:360px;
+            background:linear-gradient(90deg,#16a34a,#10b981);
+            color:#fff;
+            padding:12px 14px;
+            border-radius:10px;
+            box-shadow:0 12px 36px rgba(2,6,23,.28);
+            display:flex;
+            align-items:center;
+            gap:12px;
+            transform:translateY(-8px);
+            opacity:0;
+            transition:transform .28s cubic-bezier(.2,.9,.2,1),opacity .28s ease;
+            z-index:2000;
+        }
+        .toast.show{transform:none;opacity:1}
+        .toast .toast-body{flex:1;font-weight:600}
+        .toast.success{background:linear-gradient(90deg,#16a34a,#10b981);color:#fff}
+        .toast .close-btn{background:transparent;border:none;color:rgba(255,255,255,.95);font-size:18px;cursor:pointer;padding:4px}
+
         /* Empty State */
         .empty-state{
             text-align:center;
             padding:60px 20px;
-            color:#64748b;
+            color:var(--muted);
         }
 
         .empty-icon{
@@ -561,7 +678,7 @@
 
         .empty-title{
             font-size:20px;
-            color:#374151;
+            color:var(--text);
             margin-bottom:8px;
             font-weight:600;
         }
@@ -578,7 +695,7 @@
             border:none;
             font-size:24px;
             cursor:pointer;
-            color:#374151;
+            color:var(--text);
         }
 
         /* Responsive */
@@ -649,17 +766,19 @@
         }
         .modal-overlay.show{display:flex}
         .modal-content{
-            background:white;
+            background:var(--surface);
             width:min(420px, calc(100% - 40px));
             border-radius:12px;
             box-shadow:0 20px 50px rgba(2,6,23,0.3);
             padding:20px;
             text-align:left;
+            border:1px solid var(--card-border);
         }
         .modal-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
-        .modal-title{font-weight:700;color:#0f172a}
-        .modal-body{color:#475569;margin-bottom:16px}
+        .modal-title{font-weight:700;color:var(--text)}
+        .modal-body{color:var(--muted);margin-bottom:16px}
         .modal-footer{display:flex;justify-content:flex-end;gap:10px}
+        .dark .modal-content{background:rgba(255,255,255,0.02);border-color:rgba(255,255,255,0.03)}
 
     </style>
 </head>
@@ -689,13 +808,6 @@
                     <span>⚙️</span>
                     <span>Admin</span>
                 </a>
-                <form id="logoutForm" action="{{ route('logout') }}" method="POST">
-                    @csrf
-                    <button type="button" id="logoutBtn">
-                        <span>🚪</span>
-                        <span>Logout</span>
-                    </button>
-                </form>
             </nav>
         </aside>
 
@@ -709,12 +821,23 @@
                 </div>
                 <div class="header-actions">
                     @yield('header-actions')
-                    <div class="profile">
+
+                    <button id="themeToggle" class="btn btn-secondary" aria-pressed="false" title="Toggle dark mode">🌙</button>
+
+                    <div class="profile" id="profileBtn" tabindex="0" aria-haspopup="true" aria-expanded="false" role="button">
                         <div class="avatar">A</div>
                         <div class="profile-info">
                             <span class="profile-name">Admin</span>
                             <span class="profile-role">Administrator</span>
                         </div>
+                    </div>
+
+                    <div class="profile-menu" id="profileMenu" role="menu" aria-hidden="true">
+                        <a href="#" class="profile-menu-item">Profil</a>
+                        <button type="button" class="profile-menu-item" id="logoutBtn">Logout</button>
+                        <form id="logoutForm" action="{{ route('logout') }}" method="POST" style="display:none;">
+                            @csrf
+                        </form>
                     </div>
                 </div>
             </header>
@@ -725,6 +848,13 @@
             </main>
         </div>
     </div>
+
+    @if(session('success'))
+        <div id="globalToast" class="toast success" role="status" aria-live="polite">
+            <div class="toast-body">{{ session('success') }}</div>
+            <button id="toastClose" class="close-btn" aria-label="Tutup">×</button>
+        </div>
+    @endif
 
     <script>
         function toggleSidebar() {
@@ -744,6 +874,66 @@
                 sidebar.classList.remove('active');
             }
         });
+
+        /* Theme (dark mode) ------------------------------------------------- */
+        (function(){
+            const themeToggle = document.getElementById('themeToggle');
+            const root = document.documentElement;
+            const stored = localStorage.getItem('theme');
+
+            function applyTheme(isDark){
+                if(isDark){
+                    root.classList.add('dark');
+                    themeToggle && themeToggle.setAttribute('aria-pressed','true');
+                    themeToggle && (themeToggle.textContent = '☀️');
+                } else {
+                    root.classList.remove('dark');
+                    themeToggle && themeToggle.setAttribute('aria-pressed','false');
+                    themeToggle && (themeToggle.textContent = '🌙');
+                }
+            }
+
+            // initialise from storage / prefers-color-scheme
+            if(stored === 'dark') applyTheme(true);
+            else if(stored === 'light') applyTheme(false);
+            else applyTheme(window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches);
+
+            themeToggle && themeToggle.addEventListener('click', function(){
+                const isDark = document.documentElement.classList.toggle('dark');
+                localStorage.setItem('theme', isDark ? 'dark' : 'light');
+                applyTheme(isDark);
+            });
+        })();
+
+        /* Profile dropdown -------------------------------------------------- */
+        (function(){
+            const profileBtn = document.getElementById('profileBtn');
+            const profileMenu = document.getElementById('profileMenu');
+
+            function closeMenu(){
+                profileMenu && profileMenu.classList.remove('show');
+                profileBtn && profileBtn.setAttribute('aria-expanded','false');
+                profileMenu && profileMenu.setAttribute('aria-hidden','true');
+            }
+            function openMenu(){
+                profileMenu && profileMenu.classList.add('show');
+                profileBtn && profileBtn.setAttribute('aria-expanded','true');
+                profileMenu && profileMenu.setAttribute('aria-hidden','false');
+            }
+
+            profileBtn && profileBtn.addEventListener('click', function(e){
+                e.stopPropagation();
+                profileMenu.classList.contains('show') ? closeMenu() : openMenu();
+            });
+
+            document.addEventListener('click', function(e){
+                if(profileMenu && !profileMenu.contains(e.target) && profileBtn && !profileBtn.contains(e.target)){
+                    closeMenu();
+                }
+            });
+
+            document.addEventListener('keydown', function(e){ if(e.key === 'Escape') closeMenu(); });
+        })();
 
         // Auto-hide alerts after 5 seconds
         setTimeout(() => {

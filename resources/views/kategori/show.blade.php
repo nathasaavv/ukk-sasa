@@ -17,33 +17,33 @@
     @endsection
 
     @section('content')
-        
+
         <div class="form-container">
             <div class="card-header" style="margin-bottom:25px;">
                 <div style="display:flex;align-items:center;gap:15px;">
                     <div class="card-icon blue" style="width:48px;height:48px;font-size:20px;">📁</div>
                     <div>
-                        <h2 style="font-size:24px;color:#1e293b;margin-bottom:5px;">{{ $kategori->nama }}</h2>
-                        <p style="color:#64748b;font-size:14px;">Detail informasi kategori</p>
+                        <h2 style="font-size:24px;color:var(--text);margin-bottom:5px;">{{ $kategori->nama }}</h2>
+                        <p class="text-muted" style="font-size:14px;">Detail informasi kategori</p>
                     </div>
                 </div>
             </div>
 
-            
+
             <div class="cards" style="margin-bottom:30px;">
                 <div class="card">
                     <h3>📋 Informasi Umum</h3>
                     <div style="margin-top:15px;">
                         <div style="display:flex;justify-content:space-between;margin-bottom:12px;">
-                            <span style="color:#64748b;font-size:14px;">Nama Kategori</span>
-                            <strong style="color:#1e293b;">{{ $kategori->nama }}</strong>
+                            <span class="text-muted" style="font-size:14px;">Nama Kategori</span>
+                            <strong style="color:var(--text);">{{ $kategori->nama }}</strong>
                         </div>
                         <div style="display:flex;justify-content:space-between;margin-bottom:12px;">
-                            <span style="color:#64748b;font-size:14px;">Keterangan</span>
-                            <span style="color:#1e293b;font-size:14px;">{{ $kategori->ket_kategori ?? 'Tidak ada keterangan' }}</span>
+                            <span class="text-muted" style="font-size:14px;">Keterangan</span>
+                            <span style="color:var(--text);font-size:14px;">{{ $kategori->ket_kategori ?? 'Tidak ada keterangan' }}</span>
                         </div>
                         <div style="display:flex;justify-content:space-between;">
-                            <span style="color:#64748b;font-size:14px;">Status</span>
+                            <span class="text-muted" style="font-size:14px;">Status</span>
                             <span class="badge {{ $kategori->aspirasi_count ?? 0 > 0 ? 'done' : 'pending' }}">
                                 {{ $kategori->aspirasi_count ?? 0 > 0 ? 'Aktif' : 'Tidak Aktif' }}
                             </span>
@@ -55,28 +55,28 @@
                     <h3>📊 Statistik</h3>
                     <div style="margin-top:15px;">
                         <div style="display:flex;justify-content:space-between;margin-bottom:12px;">
-                            <span style="color:#64748b;font-size:14px;">Total Aspirasi</span>
-                            <strong style="color:#1e293b;">{{ $kategori->aspirasi_count ?? 0 }}</strong>
+                            <span class="text-muted" style="font-size:14px;">Total Aspirasi</span>
+                            <strong style="color:var(--text);">{{ $kategori->aspirasi_count ?? 0 }}</strong>
                         </div>
                         <div style="display:flex;justify-content:space-between;margin-bottom:12px;">
-                            <span style="color:#64748b;font-size:14px;">ID Kategori</span>
-                            <strong style="color:#1e293b;">#{{ $kategori->id }}</strong>
+                            <span class="text-muted" style="font-size:14px;">ID Kategori</span>
+                            <strong style="color:var(--text);">#{{ $kategori->id }}</strong>
                         </div>
                         <div style="display:flex;justify-content:space-between;">
-                            <span style="color:#64748b;font-size:14px;">Dibuat</span>
-                            <strong style="color:#1e293b;">{{ $kategori->created_at->format('d M Y') ?? 'N/A' }}</strong>
+                            <span class="text-muted" style="font-size:14px;">Dibuat</span>
+                            <strong style="color:var(--text);">{{ $kategori->created_at->format('d M Y') ?? 'N/A' }}</strong>
                         </div>
                     </div>
                 </div>
             </div>
 
-        
+
             <div class="card" style="margin-bottom:30px;">
                 <h3>📈 Kontribusi Aspirasi</h3>
                 <div style="margin-top:15px;">
                     <div style="display:flex;justify-content:space-between;margin-bottom:8px;">
-                        <span style="color:#64748b;font-size:14px;">Total: {{ $kategori->aspirasi_count ?? 0 }} aspirasi</span>
-                        <span style="color:#1e293b;font-size:14px;font-weight:600;">
+                        <span class="text-muted" style="font-size:14px;">Total: {{ $kategori->aspirasi_count ?? 0 }} aspirasi</span>
+                        <span style="color:var(--text);font-size:14px;font-weight:600;">
                             {{ $kategori->aspirasi_count ?? 0 }} aspirasi
                         </span>
                     </div>
@@ -90,7 +90,7 @@
 
     @push('scripts')
     <script>
-  
+
     document.addEventListener('DOMContentLoaded', function() {
         const progressBar = document.querySelector('.form-container .card div[style*="background:linear-gradient"]');
         if (progressBar) {
@@ -101,7 +101,7 @@
             }, 100);
         }
 
-       
+
         const cards = document.querySelectorAll('.card');
         cards.forEach((card, index) => {
             card.style.opacity = '0';

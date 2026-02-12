@@ -36,7 +36,7 @@
             <h3>Total Kategori</h3>
             <div class="card-value">{{ $kategori->count() }}</div>
         </div>
-        
+
         <div class="card">
             <div class="card-header">
                 <div class="card-icon green">💬</div>
@@ -44,7 +44,7 @@
             <h3>Total Aspirasi</h3>
             <div class="card-value">{{ $kategori->sum('aspirasi_count') ?? 0 }}</div>
         </div>
-        
+
         <div class="card">
             <div class="card-header">
                 <div class="card-icon yellow">⚡</div>
@@ -60,12 +60,12 @@
             <div class="table-actions">
                 <div style="display:flex;gap:10px;align-items:center;">
                     <div class="search-box">
-                        <input type="text" 
-                               placeholder="Cari kategori..." 
+                        <input type="text"
+                               placeholder="Cari kategori..."
                                id="searchKategori"
                                value="{{ request('search') }}">
                     </div>
-                    <button type="button" 
+                    <button type="button"
                             class="btn btn-primary"
                             onclick="
                                 const searchTerm = document.getElementById('searchKategori').value;
@@ -87,8 +87,8 @@
                         <span>Cari</span>
                     </button>
                 </div>
-                <select class="form-control" 
-                        style="width:150px;" 
+                <select class="form-control"
+                        style="width:150px;"
                         id="filterStatus"
                         onchange="window.location.href='{{ route('kategori.index') }}?status=' + this.value + (document.getElementById('searchKategori').value ? '&search=' + document.getElementById('searchKategori').value : '')">
                     <option value="">Semua Status</option>
@@ -97,7 +97,7 @@
                 </select>
             </div>
         </div>
-        
+
         <div class="table-wrapper">
             <table id="kategoriTable">
                 <thead>
@@ -121,7 +121,7 @@
                             </div>
                         </td>
                         <td>
-                            <span style="color:#64748b;font-size:13px;">
+                            <span class="text-muted" style="font-size:13px;">
                                 {{ Str::limit($item->ket_kategori ?? 'Tidak ada keterangan', 50) }}
                             </span>
                         </td>
@@ -137,12 +137,12 @@
                         </td>
                         <td>
                             <div style="display:flex;gap:6px;">
-                                <a href="{{ route('kategori.show', $item->id) }}" 
+                                <a href="{{ route('kategori.show', $item->id) }}"
                                    class="btn btn-sm btn-primary"
                                    title="Lihat Detail">
                                     <span>Lihat</span>
                                 </a>
-                                <a href="{{ route('kategori.edit', $item->id) }}" 
+                                <a href="{{ route('kategori.edit', $item->id) }}"
                                    class="btn btn-sm btn-warning"
                                    title="Edit Kategori">
                                     <span>Edit</span>
@@ -191,23 +191,23 @@ function performSearch() {
     const searchTerm = document.getElementById('searchKategori').value;
     const statusFilter = document.getElementById('filterStatus').value;
     let url = '{{ route('kategori.index') }}';
-    
+
     // Build URL dengan parameters
     const params = new URLSearchParams();
-    
+
     if (searchTerm.trim()) {
         params.append('search', searchTerm.trim());
     }
-    
+
     if (statusFilter) {
         params.append('status', statusFilter);
     }
-    
+
     // Add parameters ke URL
     if (params.toString()) {
         url += '?' + params.toString();
     }
-    
+
     console.log('Redirecting to:', url); // Debug log
     window.location.href = url;
 }
@@ -215,10 +215,10 @@ function performSearch() {
 // Pastikan DOM loaded
 document.addEventListener('DOMContentLoaded', function() {
     console.log('DOM loaded'); // Debug log
-    
+
     // Test function availability
     console.log('performSearch function exists:', typeof performSearch); // Debug log
-    
+
     // Setup search button click event (backup)
     const searchBtn = document.querySelector('button[onclick="performSearch()"]');
     if (searchBtn) {
@@ -226,7 +226,7 @@ document.addEventListener('DOMContentLoaded', function() {
     } else {
         console.log('Search button not found'); // Debug log
     }
-    
+
     // Search dengan URL parameter (Enter key)
     const searchInput = document.getElementById('searchKategori');
     if (searchInput) {
@@ -240,7 +240,7 @@ document.addEventListener('DOMContentLoaded', function() {
     } else {
         console.log('Search input not found'); // Debug log
     }
-    
+
     // Animate cards on page load
     const cards = document.querySelectorAll('.card');
     cards.forEach((card, index) => {

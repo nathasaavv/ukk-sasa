@@ -19,16 +19,23 @@
             justify-content: center;
             align-items: center;
             padding: 20px;
+            position: relative;
         }
 
+        /* dim gradient slightly so the form card stands out */
+        body::before{ content: ""; position: fixed; inset: 0; background: rgba(11,17,34,0.06); pointer-events: none; }
+
         .login-container {
-            background: white;
+            /* make container clearly readable on top of the gradient */
+            background: rgba(255,255,255,0.96);
+            color: #0b1220;
             border-radius: 15px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 30px 80px rgba(2,6,23,0.18);
             overflow: hidden;
             max-width: 450px;
             width: 100%;
             animation: slideIn 0.5s ease-out;
+            border: 1px solid rgba(2,6,23,0.06);
         }
 
         @keyframes slideIn {
@@ -255,16 +262,9 @@
         <form class="login-form" action="{{ route('login.authenticate') }}" method="POST" id="mainLoginForm">
             @csrf
 
-            {{-- role selector (admin | siswa) --}}
             @php $initialRole = old('role', $role ?? 'admin'); @endphp
-            <div class="form-group" style="margin-bottom:18px;">
-                <label>Pilih peran</label>
-                <div style="display:flex;gap:8px;margin-top:8px;">
-                    <button type="button" class="btn" id="roleAdminBtn" style="background:{{ $initialRole==='admin' ? '#667eea' : '#f1f5f9' }};color:{{ $initialRole==='admin' ? '#fff' : '#374151' }};">Admin</button>
-                    <button type="button" class="btn" id="roleSiswaBtn" style="background:{{ $initialRole==='siswa' ? '#667eea' : '#f1f5f9' }};color:{{ $initialRole==='siswa' ? '#fff' : '#374151' }};">Siswa</button>
-                </div>
-                <input type="hidden" name="role" id="roleInput" value="{{ $initialRole }}">
-            </div>
+            <!-- role handled on "Pilih Peran" page; keep role value as hidden input -->
+            <input type="hidden" name="role" id="roleInput" value="{{ $initialRole }}">
 
             {{-- Error Messages --}}
             @if ($errors->has('email') || $errors->has('password') || $errors->has('nis'))
@@ -289,7 +289,7 @@
             @endif
 
             <!-- Admin: Email / Siswa: NIS -->
-            <div class="form-group" id="emailGroup">
+            <div class="form-group" id="emailGroup" style="{{ $initialRole === 'siswa' ? 'display:none;' : '' }}">
                 <label for="email">Email atau Username</label>
                 <div class="input-icon-group">
                     <input
@@ -304,7 +304,7 @@
                 </div>
             </div>
 
-            <div class="form-group" id="nisGroup" style="display:none;">
+            <div class="form-group" id="nisGroup" style="{{ $initialRole === 'siswa' ? '' : 'display:none;' }}">
                 <label for="nis">NIS</label>
                 <div class="input-icon-group">
                     <input
@@ -320,7 +320,7 @@
             </div>
 
             <!-- Password Field (only for admin) -->
-            <div class="form-group" id="passwordGroup">
+            <div class="form-group" id="passwordGroup" style="{{ $initialRole === 'siswa' ? 'display:none;' : '' }}">
                 <label for="password">Password</label>
                 <div class="input-icon-group">
                     <input
@@ -347,50 +347,6 @@
             <button type="submit" class="btn-login">Masuk</button>
         </form>
 
-        <script>
-            (function(){
-                const roleInput = document.getElementById('roleInput');
-                const roleAdminBtn = document.getElementById('roleAdminBtn');
-                const roleSiswaBtn = document.getElementById('roleSiswaBtn');
-                const emailGroup = document.getElementById('emailGroup');
-                const nisGroup = document.getElementById('nisGroup');
-                const emailInput = document.getElementById('email');
-                const nisInput = document.getElementById('nis');
-
-                function setRole(role){
-                    roleInput.value = role;
-
-                    if(role === 'siswa'){
-                        // show nis, hide email
-                        nisGroup.style.display = '';
-                        emailGroup.style.display = 'none';
-                        nisInput && nisInput.setAttribute('required','');
-                        emailInput && emailInput.removeAttribute('required');
-
-                        roleAdminBtn.style.background = '#f1f5f9';
-                        roleAdminBtn.style.color = '#374151';
-                        roleSiswaBtn.style.background = '#667eea';
-                        roleSiswaBtn.style.color = '#fff';
-                    } else {
-                        nisGroup.style.display = 'none';
-                        emailGroup.style.display = '';
-                        emailInput && emailInput.setAttribute('required','');
-                        nisInput && nisInput.removeAttribute('required');
-
-                        roleAdminBtn.style.background = '#667eea';
-                        roleAdminBtn.style.color = '#fff';
-                        roleSiswaBtn.style.background = '#f1f5f9';
-                        roleSiswaBtn.style.color = '#374151';
-                    }
-                }
-
-                roleAdminBtn.addEventListener('click', ()=> setRole('admin'));
-                roleSiswaBtn.addEventListener('click', ()=> setRole('siswa'));
-
-                // initialise from server-provided value
-                setRole(roleInput.value || 'admin');
-            })();
-        </script>
 
         <!-- Footer -->
         <div class="login-footer">

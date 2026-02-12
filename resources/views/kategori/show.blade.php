@@ -13,11 +13,11 @@
     @endsection
 
     @section('header-actions')
-        <!-- Tidak ada action buttons untuk view only -->
+
     @endsection
 
     @section('content')
-        <!-- Detail Card -->
+        
         <div class="form-container">
             <div class="card-header" style="margin-bottom:25px;">
                 <div style="display:flex;align-items:center;gap:15px;">
@@ -29,7 +29,7 @@
                 </div>
             </div>
 
-            <!-- Information Grid -->
+            
             <div class="cards" style="margin-bottom:30px;">
                 <div class="card">
                     <h3>📋 Informasi Umum</h3>
@@ -70,7 +70,7 @@
                 </div>
             </div>
 
-            <!-- Progress Bar -->
+        
             <div class="card" style="margin-bottom:30px;">
                 <h3>📈 Kontribusi Aspirasi</h3>
                 <div style="margin-top:15px;">
@@ -90,7 +90,7 @@
 
     @push('scripts')
     <script>
-    // Animate progress bar on page load
+  
     document.addEventListener('DOMContentLoaded', function() {
         const progressBar = document.querySelector('.form-container .card div[style*="background:linear-gradient"]');
         if (progressBar) {
@@ -101,7 +101,7 @@
             }, 100);
         }
 
-        // Animate cards on page load
+       
         const cards = document.querySelectorAll('.card');
         cards.forEach((card, index) => {
             card.style.opacity = '0';

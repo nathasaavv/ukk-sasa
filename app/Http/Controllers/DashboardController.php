@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use App\Models\Kategori;
 
 class DashboardController extends Controller
 {
     public function index()
     {
-        return view('kategori.index');
+        $kategori = Kategori::all();
+        return view('index', compact('kategori'));
     }
 }

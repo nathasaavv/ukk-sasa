@@ -87,6 +87,56 @@
             font-size:16px;
         }
 
+        .menu form {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+        }
+
+        .menu form button {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 15px;
+            margin-bottom: 10px;
+            color: #cbd5e1;
+            background: none;
+            border: none;
+            border-radius: 10px;
+            transition: .3s;
+            position: relative;
+            cursor: pointer;
+            font-family: inherit;
+            font-size: inherit;
+        }
+
+        .menu form button::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 4px;
+            height: 0;
+            background: #2563eb;
+            border-radius: 0 2px 2px 0;
+            transition: height 0.3s ease;
+        }
+
+        .menu form button:hover, .menu form button.active {
+            background: #2563eb;
+            color: white;
+        }
+
+        .menu form button.active::before {
+            height: 20px;
+        }
+
+        .menu form button span {
+            font-size: 16px;
+        }
+
         /* Main */
         .main{
             margin-left:260px;
@@ -586,6 +636,31 @@
                 justify-content:space-between;
             }
         }
+
+        /* Logout confirmation modal */
+        .modal-overlay{
+            position:fixed;
+            inset:0;
+            background:rgba(2,6,23,0.6);
+            display:none;
+            align-items:center;
+            justify-content:center;
+            z-index:2000;
+        }
+        .modal-overlay.show{display:flex}
+        .modal-content{
+            background:white;
+            width:min(420px, calc(100% - 40px));
+            border-radius:12px;
+            box-shadow:0 20px 50px rgba(2,6,23,0.3);
+            padding:20px;
+            text-align:left;
+        }
+        .modal-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+        .modal-title{font-weight:700;color:#0f172a}
+        .modal-body{color:#475569;margin-bottom:16px}
+        .modal-footer{display:flex;justify-content:flex-end;gap:10px}
+
     </style>
 </head>
 <body>
@@ -594,7 +669,7 @@
         <aside class="sidebar" id="sidebar">
             <div class="logo">Admin Panel</div>
             <nav class="menu">
-                <a href="#" class="{{ request()->routeIs('dashboard') ? 'active' : '' }}">
+                <a href="{{ route('dashboard.index') }}" class="{{ request()->routeIs('dashboard') ? 'active' : '' }}">
                     <span>📊</span>
                     <span>Dashboard</span>
                 </a>
@@ -602,7 +677,7 @@
                     <span>💬</span>
                     <span>Aspirasi</span>
                 </a>
-                <a href="#" class="{{ request()->routeIs('siswa.*') ? 'active' : '' }}">
+                <a href="{{ route('siswa.index') }}" class="{{ request()->routeIs('siswa.*') ? 'active' : '' }}">
                     <span>👥</span>
                     <span>Siswa</span>
                 </a>
@@ -610,14 +685,17 @@
                     <span>📁</span>
                     <span>Kategori</span>
                 </a>
-                <a href="#" class="{{ request()->routeIs('admin.*') ? 'active' : '' }}">
+                <a href="{{ route('admin.users.index') }}" class="{{ request()->routeIs('admin.users.*') ? 'active' : '' }}">
                     <span>⚙️</span>
                     <span>Admin</span>
                 </a>
-                <a href="#" class="{{ request()->routeIs('logout') ? 'active' : '' }}">
-                    <span>🚪</span>
-                    <span>Logout</span>
-                </a>
+                <form id="logoutForm" action="{{ route('logout') }}" method="POST">
+                    @csrf
+                    <button type="button" id="logoutBtn">
+                        <span>🚪</span>
+                        <span>Logout</span>
+                    </button>
+                </form>
             </nav>
         </aside>
 
@@ -658,10 +736,10 @@
         document.addEventListener('click', function(event) {
             const sidebar = document.getElementById('sidebar');
             const toggle = document.querySelector('.mobile-menu-toggle');
-            
-            if (window.innerWidth <= 768 && 
-                !sidebar.contains(event.target) && 
-                !toggle.contains(event.target) && 
+
+            if (window.innerWidth <= 768 &&
+                !sidebar.contains(event.target) &&
+                !toggle.contains(event.target) &&
                 sidebar.classList.contains('active')) {
                 sidebar.classList.remove('active');
             }
@@ -674,6 +752,54 @@
                 alert.style.display = 'none';
             });
         }, 5000);
+
+        /* Logout confirmation modal behaviour */
+        // create modal HTML and append to body
+        (function(){
+            const modalHtml = `
+                <div class="modal-overlay" id="logoutModal" aria-hidden="true">
+                    <div class="modal-content" role="dialog" aria-modal="true" aria-labelledby="logoutModalTitle">
+                        <div class="modal-header">
+                            <div class="modal-title" id="logoutModalTitle">Konfirmasi Logout</div>
+                            <button id="logoutModalClose" aria-label="Tutup" style="background:none;border:none;font-size:18px;cursor:pointer">×</button>
+                        </div>
+                        <div class="modal-body">Apakah anda yakin ingin logout?</div>
+                        <div class="modal-footer">
+                            <button class="btn btn-secondary" id="logoutCancel">Batal</button>
+                            <button class="btn btn-danger" id="logoutConfirm">Ya, Logout</button>
+                        </div>
+                    </div>
+                </div>
+            `;
+            document.body.insertAdjacentHTML('beforeend', modalHtml);
+
+            const logoutBtn = document.getElementById('logoutBtn');
+            const logoutModal = document.getElementById('logoutModal');
+            const logoutCancel = document.getElementById('logoutCancel');
+            const logoutClose = document.getElementById('logoutModalClose');
+            const logoutConfirm = document.getElementById('logoutConfirm');
+            const logoutForm = document.getElementById('logoutForm');
+
+            function openModal(){
+                logoutModal.classList.add('show');
+                logoutModal.setAttribute('aria-hidden', 'false');
+            }
+            function closeModal(){
+                logoutModal.classList.remove('show');
+                logoutModal.setAttribute('aria-hidden', 'true');
+            }
+
+            logoutBtn && logoutBtn.addEventListener('click', (e)=>{ e.preventDefault(); openModal(); });
+            logoutCancel && logoutCancel.addEventListener('click', closeModal);
+            logoutClose && logoutClose.addEventListener('click', closeModal);
+            logoutModal && logoutModal.addEventListener('click', function(e){ if(e.target === logoutModal) closeModal(); });
+            document.addEventListener('keydown', function(e){ if(e.key === 'Escape') closeModal(); });
+
+            logoutConfirm && logoutConfirm.addEventListener('click', function(){
+                // submit the actual logout form
+                logoutForm && logoutForm.submit();
+            });
+        })();
     </script>
 </body>
 </html>

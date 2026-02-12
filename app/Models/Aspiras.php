@@ -16,6 +16,6 @@ class Aspiras extends Model
     ];
     public function kategori()
     {
-        return $this->belongsTo(Ketegori::class, 'kategori_id');
+        return $this->belongsTo(Kategori::class, 'kategori_id');
     }
 }

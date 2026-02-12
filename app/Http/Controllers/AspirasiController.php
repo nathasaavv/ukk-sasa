@@ -2,9 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-
 class AspirasiController extends Controller
 {
-    //
+    /**
+     * Show list of aspirasi.
+     */
+    public function index()
+    {
+        return view('siswa.index');
+    }
 }

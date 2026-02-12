@@ -10,7 +10,7 @@ class KategoriController extends Controller
     public function index(Request $request)
     {
         $query = Kategori::query();
-        
+
         if ($request->has('status')) {
             $status = $request->get('status');
             if ($status === 'active') {
@@ -19,15 +19,15 @@ class KategoriController extends Controller
                 $query->where('status', 0);
             }
         }
-        
+
         if ($request->has('search')) {
             $search = $request->get('search');
-            $query->where(function($q) use ($search) {
+            $query->where(function ($q) use ($search) {
                 $q->where('nama', 'like', '%' . $search . '%')
-                  ->orWhere('ket_kategori', 'like', '%' . $search . '%');
+                    ->orWhere('ket_kategori', 'like', '%' . $search . '%');
             });
         }
-        
+
         $kategori = $query->get();
         return view('kategori.index', compact('kategori'));
     }
@@ -61,10 +61,10 @@ class KategoriController extends Controller
             'ket_kategori' => 'required',
             'status' => 'required|boolean',
         ]);
-        
+
         $kategori = Kategori::findOrFail($id);
         $kategori->update($validate);
-        
+
         return redirect()->route('kategori.index')->with('success', 'Kategori berhasil diperbarui');
     }
 

@@ -31,6 +31,12 @@ Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 // Protected Routes (Require Authentication)
 Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard.index');
+    Route::get('/aspirasi', [App\Http\Controllers\AspirasiController::class, 'index'])->name('aspirasi.index');
+    Route::get('/aspirasi/create', [App\Http\Controllers\AspirasiController::class, 'create'])->name('aspirasi.create');
+    Route::post('/aspirasi/store', [App\Http\Controllers\AspirasiController::class, 'store'])->name('aspirasi.store');
+    Route::get('/aspirasi/{id}/edit', [App\Http\Controllers\AspirasiController::class, 'edit'])->name('aspirasi.edit');
+    Route::put('/aspirasi/{id}/update', [App\Http\Controllers\AspirasiController::class, 'update'])->name('aspirasi.update');
+    Route::get('/aspirasi/{id}', [App\Http\Controllers\AspirasiController::class, 'show'])->name('aspirasi.show');
 
     // Kategori
     Route::get('/kategori', [KategoriController::class, 'index'])->name('kategori.index');
@@ -40,12 +46,8 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('/kategori/{id}', [KategoriController::class, 'destroy'])->name('kategori.destroy');
     Route::get('/kategori/{id}/edit', [KategoriController::class, 'edit'])->name('kategori.edit');
     Route::put('/kategori/{id}/update', [KategoriController::class, 'update'])->name('kategori.update');
-    Route::get('/siswa', [App\Http\Controllers\AspirasiController::class, 'index'])->name('siswa.index');
     // Admin - User Management
     Route::prefix('admin')->name('admin.')->group(function () {
         Route::resource('users', App\Http\Controllers\Admin\UserController::class)->except(['show']);
-
-
-
     });
 });

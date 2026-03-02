@@ -3,993 +3,229 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@yield('title', 'Admin Panel')</title>
-    <style>
-        *{
-            margin:0;
-            padding:0;
-            box-sizing:border-box;
-            font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-
-        :root{
-            --bg: #f4f7fb;
-            --surface: #ffffff;
-            --muted: #64748b;
-            --text: #1e293b;
-            --sidebar-bg: linear-gradient(180deg,#1e293b,#0f172a);
-            --card-border: #f1f5f9;
-            --primary: #2563eb;
-            --primary-600: #1d4ed8;
-            --success-from: #16a34a;
-            --success-to: #10b981;
-            --toast-text: #ffffff;
-        }
-        body{
-            background:var(--bg);
-            color:var(--text);
-            transition:background .2s ease,color .2s ease;
-        }
-
-        /* Dark mode overrides (toggle .dark on <html> or <body>) */
-        .dark{
-            --bg: #0b1220;
-            --surface: #0f1724;
-            --muted: #9ca3af;
-            --text: #e6eef8;
-            --sidebar-bg: linear-gradient(180deg,#071029,#041227);
-            --card-border: rgba(255,255,255,0.04);
-        }
-
-        .layout{
-            display:flex;
-            min-height:100vh;
-        }
-
-        /* Sidebar */
-        .sidebar{
-            width:260px;
-            background:var(--sidebar-bg);
-            color:white;
-            padding:20px;
-            position:fixed;
-            height:100vh;
-            overflow-y:auto;
-            z-index:1000;
-            transition: width 220ms ease, background .2s ease;
-        }
-
-        .logo{
-            font-size:20px;
-            font-weight:700;
-            margin-bottom:40px;
-            display:flex;
-            align-items:center;
-            gap:10px;
-        }
-
-        .logo::before{
-            content: "🎯";
-            font-size:24px;
-        }
-
-        .menu a{
-            display:flex;
-            align-items:center;
-            gap:12px;
-            padding:12px 15px;
-            margin-bottom:10px;
-            color:#cbd5e1;
-            text-decoration:none;
-            border-radius:10px;
-            transition:background .18s ease,transform .18s ease;
-            position:relative;
-            justify-content:flex-start;
-        }
-        .menu a span:last-child{display:inline-block}
-        .menu a span:first-child{font-size:18px}
-        .menu a[title]{cursor:default} /* keep title tooltips */
-
-
-
-        .menu a::before{
-            content: "";
-            position: absolute;
-            left: 0;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 4px;
-            height: 0;
-            background: #2563eb;
-            border-radius: 0 2px 2px 0;
-            transition: height 0.3s ease;
-        }
-
-        .menu a:hover, .menu a.active{
-            background:#2563eb;
-            color:white;
-        }
-
-        .menu a.active::before{
-            height: 20px;
-        }
-
-        .menu a span{
-            font-size:16px;
-        }
-
-        .menu form {
-            margin: 0;
-            padding: 0;
-            width: 100%;
-        }
-
-        .menu form button {
-            width: 100%;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 12px 15px;
-            margin-bottom: 10px;
-            color: #cbd5e1;
-            background: none;
-            border: none;
-            border-radius: 10px;
-            transition: .3s;
-            position: relative;
-            cursor: pointer;
-            font-family: inherit;
-            font-size: inherit;
-        }
-
-        .menu form button::before {
-            content: "";
-            position: absolute;
-            left: 0;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 4px;
-            height: 0;
-            background: #2563eb;
-            border-radius: 0 2px 2px 0;
-            transition: height 0.3s ease;
-        }
-
-        .menu form button:hover, .menu form button.active {
-            background: #2563eb;
-            color: white;
-        }
-
-        .menu form button.active::before {
-            height: 20px;
-        }
-
-        .menu form button span {
-            font-size: 16px;
-        }
-
-        /* Main */
-        .main{
-            margin-left:260px; /* match default sidebar */
-            width:calc(100% - 260px);
-            transition: margin-left 220ms ease, width 220ms ease;
-        }
-
-        .header{
-            background:var(--surface);
-            padding:22px 36px; /* slightly more breathing room */
-            display:flex;
-            justify-content:space-between;
-            align-items:center;
-            box-shadow:0 6px 28px rgba(2,6,23,.06);
-            position:sticky;
-            top:0;
-            z-index:100;
-        }
-
-        .header h1{
-            font-size:24px;
-            color:var(--text);
-            font-weight:700;
-        }
-
-        .header-actions{
-            display:flex;
-            align-items:center;
-            gap:15px;
-            position:relative; /* for profile dropdown */
-        }
-
-        .profile{
-            display:flex;
-            align-items:center;
-            gap:12px;
-            padding:10px 14px;
-            background:var(--surface);
-            border-radius:12px;
-            cursor:pointer;
-            transition: all 0.18s ease;
-            border:1px solid transparent;
-        }
-
-        .profile:hover{
-            transform:translateY(-2px);
-            box-shadow:0 8px 22px rgba(2,6,23,.06);
-        }
-
-        .avatar{
-            width:40px;
-            height:40px;
-            border-radius:50%;
-            background:linear-gradient(135deg,#2563eb,#1d4ed8);
-            display:flex;
-            align-items:center;
-            justify-content:center;
-            color:white;
-            font-weight:600;
-        }
-
-        .profile-info{
-            display:flex;
-            flex-direction:column;
-        }
-
-        .profile-name{
-            font-size:14px;
-            font-weight:600;
-            color:var(--text);
-        }
-
-        .profile-role{
-            font-size:12px;
-            color:var(--muted);
-        }
-
-        /* utility text colors */
-        .text-muted{ color: var(--muted); }
-        .text-body{ color: var(--text); }
-
-        /* Profile dropdown */
-        .profile-menu{
-            position:absolute;
-            right:8px;
-            top:calc(100% + 10px);
-            min-width:180px;
-            background:var(--surface);
-            border-radius:10px;
-            box-shadow:0 12px 36px rgba(2,6,23,.12);
-            padding:8px;
-            display:none;
-            flex-direction:column;
-            gap:6px;
-            z-index:1500;
-            border:1px solid var(--card-border);
-        }
-
-        .profile-menu.show{display:flex}
-        .profile-menu-item{background:transparent;border:none;padding:8px 10px;text-align:left;border-radius:8px;cursor:pointer;color:var(--text);text-decoration:none}
-        .profile-menu-item:hover{background:rgba(2,6,23,.04)}
-
-        /* Theme toggle */
-        #themeToggle{padding:8px 10px;border-radius:8px;border:1px solid var(--card-border);background:var(--surface);color:var(--text);cursor:pointer}
-        #themeToggle[aria-pressed="true"]{background:linear-gradient(90deg,var(--primary),var(--primary-600));color:#fff}
-        .dark #themeToggle{background:transparent;border-color:rgba(255,255,255,0.06);color:var(--text)}
-
-        /* Dark mode surface adjustments */
-        .dark .profile-menu{background:rgba(255,255,255,0.02);border-color:var(--card-border)}
-        .dark #themeToggle{background:transparent}
-
-
-        .content{
-            padding:36px; /* more generous spacing */
-        }
-
-        /* Buttons */
-        .btn{
-            padding:10px 16px;
-            border-radius:10px;
-            text-decoration:none;
-            font-weight:600;
-            font-size:14px;
-            transition:.3s;
-            display:inline-flex;
-            align-items:center;
-            gap:6px;
-            cursor:pointer;
-            border:none;
-        }
-
-        .btn-primary{
-            background:#2563eb;
-            color:white;
-        }
-
-        .btn-primary:hover{
-            background:#1d4ed8;
-            transform:translateY(-2px);
-            box-shadow:0 4px 15px rgba(37, 99, 235, 0.3);
-        }
-
-        .btn-secondary{
-            background:#64748b;
-            color:white;
-        }
-
-        .btn-secondary:hover{
-            background:#475569;
-            transform:translateY(-2px);
-        }
-
-        .btn-success{
-            background:#16a34a;
-            color:white;
-        }
-
-        .btn-success:hover{
-            background:#15803d;
-            transform:translateY(-2px);
-        }
-
-        .btn-warning{
-            background:#f59e0b;
-            color:white;
-        }
-
-        .btn-warning:hover{
-            background:#d97706;
-            transform:translateY(-2px);
-        }
-
-        .btn-danger{
-            background:#ef4444;
-            color:white;
-        }
-
-        .btn-danger:hover{
-            background:#dc2626;
-            transform:translateY(-2px);
-        }
-
-        .btn-sm{
-            padding:6px 12px;
-            font-size:12px;
-        }
-
-        /* Cards */
-        .cards{
-            display:grid;
-            grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
-            gap:28px; /* increased gap for airy layout */
-            margin-bottom:36px;
-        }
-
-        .card{
-            background:var(--surface);
-            padding:24px; /* a bit more padding */
-            border-radius:16px;
-            box-shadow:0 8px 30px rgba(2,6,23,.06);
-            transition: all 0.28s ease;
-            border:1px solid var(--card-border);
-            min-height:92px;
-        }
-
-        .card:hover{
-            transform: translateY(-5px);
-            box-shadow:0 20px 40px rgba(2,6,23,.09);
-        }
-
-        .card-header{
-            display:flex;
-            align-items:center;
-            justify-content:space-between;
-            margin-bottom:15px;
-        }
-
-        .card-icon{
-            width:48px;
-            height:48px;
-            border-radius:12px;
-            display:flex;
-            align-items:center;
-            justify-content:center;
-            font-size:20px;
-        }
-
-        .card-icon.blue{
-            background:#dbeafe;
-            color:#2563eb;
-        }
-
-        .card-icon.green{
-            background:#dcfce7;
-            color:#16a34a;
-        }
-
-        .card-icon.yellow{
-            background:#fef3c7;
-            color:#d97706;
-        }
-
-        .card-icon.purple{
-            background:#f3e8ff;
-            color:#9333ea;
-        }
-
-        .card h3{
-            font-size:14px;
-            color:var(--muted);
-            font-weight:500;
-            margin-bottom:8px;
-        }
-
-        .card-value{
-            font-size:28px;
-            font-weight:700;
-            color:var(--text);
-            margin-bottom:8px;
-        }
-
-        /* Dark-mode tweaks for icons (better contrast on dark bg) */
-        .dark .card-icon.blue{background:rgba(37,99,235,0.08)}
-        .dark .card-icon.green{background:rgba(16,163,127,0.06)}
-        .dark .card-icon.yellow{background:rgba(217,119,6,0.05)}
-        .dark .card-icon.purple{background:rgba(147,51,234,0.05)}
-
-        .card-change{
-            font-size:12px;
-            font-weight:500;
-            display:flex;
-            align-items:center;
-            gap:4px;
-        }
-
-        .card-change.positive{
-            color:#16a34a;
-        }
-
-        .card-change.negative{
-            color:#dc2626;
-        }
-
-        /* Table */
-        .table-container{
-            background:var(--surface);
-            border-radius:16px;
-            box-shadow:0 10px 25px rgba(2,6,23,.05);
-            overflow:hidden;
-            border:1px solid var(--card-border);
-        }
-        .dark .table-container{background:rgba(255,255,255,0.01);border-color:rgba(255,255,255,0.03)}
-
-        .table-header{
-            padding:20px 25px;
-            border-bottom:1px solid #e5e7eb;
-            display:flex;
-            justify-content:space-between;
-            align-items:center;
-            flex-wrap:wrap;
-            gap:15px;
-        }
-
-        .table-title{
-            font-size:18px;
-            font-weight:600;
-            color:var(--text);
-        }
-
-        .table-actions{
-            display:flex;
-            gap:10px;
-            align-items:center;
-        }
-
-        .search-box{
-            position:relative;
-        }
-
-        .search-box input{
-            padding:8px 12px 8px 36px;
-            border:1px solid #e5e7eb;
-            border-radius:8px;
-            font-size:14px;
-            width:250px;
-            transition: all 0.3s ease;
-        }
-
-        .search-box input:focus{
-            outline:none;
-            border-color:#2563eb;
-            box-shadow:0 0 0 3px rgba(37, 99, 235, 0.1);
-        }
-
-        .search-box::before{
-            content: "🔍";
-            position: absolute;
-            left: 12px;
-            top: 50%;
-            transform: translateY(-50%);
-            font-size:14px;
-        }
-
-        .table-wrapper{
-            overflow-x:auto;
-        }
-
-        table{
-            width:100%;
-            border-collapse:collapse;
-        }
-
-        table th{
-            background:var(--surface);
-            font-weight:600;
-            color:var(--muted);
-            text-align:left;
-            padding:12px 16px;
-            font-size:14px;
-            border-bottom:1px solid var(--card-border);
-        }
-
-        table td{
-            padding:12px 16px;
-            border-bottom:1px solid var(--card-border);
-            font-size:14px;
-            color:var(--muted);
-            background:transparent;
-        }
-
-        table tbody tr:hover{
-            background:rgba(2,6,23,.03);
-        }
-
-        .badge{
-            padding:4px 10px;
-            border-radius:20px;
-            font-size:12px;
-            font-weight:600;
-            display:inline-block;
-        }
-
-        .badge.pending{background:#fef3c7;color:#92400e;}
-        .badge.done{background:#dcfce7;color:#166534;}
-        .badge.processing{background:#dbeafe;color:#1e40af;}
-        .badge.cancelled{background:#fecaca;color:#991b1b;}
-
-        /* Dark-mode table / badges */
-        .dark table th{background:transparent;color:var(--muted);border-color:rgba(255,255,255,0.04)}
-        .dark table td{color:var(--muted);border-color:rgba(255,255,255,0.04)}
-        .dark table tbody tr:hover{background:rgba(255,255,255,0.02)}
-        .dark .badge{opacity:.95}
-        .dark .badge.pending{background:rgba(255,248,220,0.06);color:#f59e0b}
-        .dark .badge.done{background:rgba(16,185,129,0.06);color:#34d399}
-        .dark .badge.processing{background:rgba(59,130,246,0.06);color:#60a5fa}
-        .dark .badge.cancelled{background:rgba(254,202,202,0.04);color:#fb7185}
-
-        /* Form */
-        .form-container{
-            background:var(--surface);
-            border-radius:16px;
-            box-shadow:0 8px 24px rgba(2,6,23,.06);
-            padding:25px;
-            border:1px solid var(--card-border);
-        }
-
-        .form-group{
-            margin-bottom:20px;
-        }
-
-        .form-group label{
-            display:block;
-            margin-bottom:8px;
-            color:var(--muted);
-            font-weight:500;
-            font-size:14px;
-        }
-
-        .form-control{
-            width:100%;
-            padding:10px 14px;
-            border:1px solid var(--card-border);
-            border-radius:8px;
-            font-size:14px;
-            transition: all 0.3s ease;
-            background:transparent;
-            color:var(--text);
-        }
-
-        .form-control:focus{
-            outline:none;
-            border-color:var(--primary);
-            box-shadow:0 0 0 3px rgba(37, 99, 235, 0.08);
-        }
-
-        textarea.form-control{
-            resize:vertical;
-            min-height:100px;
-        }
-
-        .dark .form-control{background:rgba(255,255,255,0.02);color:var(--text);border-color:rgba(255,255,255,0.04)}
-
-        /* Alert */
-        .alert{
-            padding:12px 16px;
-            border-radius:8px;
-            margin-bottom:20px;
-            display:flex;
-            align-items:center;
-            gap:10px;
-        }
-
-        .alert-success{
-            background:#f0fdf4;
-            border:1px solid #bbf7d0;
-            color:#16a34a;
-        }
-
-        .alert-error{
-            background:#fef2f2;
-            border:1px solid #fecaca;
-            color:#dc2626;
-        }
-
-        .alert-warning{
-            background:#fffbeb;
-            border:1px solid #fed7aa;
-            color:#d97706;
-        }
-
-        /* Toast (global) */
-        .toast{
-            position:fixed;
-            right:24px;
-            top:24px;
-            min-width:260px;
-            max-width:360px;
-            background:linear-gradient(90deg,#16a34a,#10b981);
-            color:#fff;
-            padding:12px 14px;
-            border-radius:10px;
-            box-shadow:0 12px 36px rgba(2,6,23,.28);
-            display:flex;
-            align-items:center;
-            gap:12px;
-            transform:translateY(-8px);
-            opacity:0;
-            transition:transform .28s cubic-bezier(.2,.9,.2,1),opacity .28s ease;
-            z-index:2000;
-        }
-        .toast.show{transform:none;opacity:1}
-        .toast .toast-body{flex:1;font-weight:600}
-        .toast.success{background:linear-gradient(90deg,#16a34a,#10b981);color:#fff}
-        .toast .close-btn{background:transparent;border:none;color:rgba(255,255,255,.95);font-size:18px;cursor:pointer;padding:4px}
-
-        /* Empty State */
-        .empty-state{
-            text-align:center;
-            padding:60px 20px;
-            color:var(--muted);
-        }
-
-        .empty-icon{
-            font-size:64px;
-            margin-bottom:20px;
-            opacity:0.5;
-        }
-
-        .empty-title{
-            font-size:20px;
-            color:var(--text);
-            margin-bottom:8px;
-            font-weight:600;
-        }
-
-        .empty-description{
-            font-size:14px;
-            margin-bottom:20px;
-        }
-
-        /* Mobile Menu Toggle */
-        .mobile-menu-toggle{
-            display:none;
-            background:none;
-            border:none;
-            font-size:24px;
-            cursor:pointer;
-            color:var(--text);
-        }
-
-        /* Responsive */
-        @media(max-width:900px){
-            .sidebar{width:200px}
-            .main{margin-left:200px;width:calc(100% - 200px)}
-        }
-
-        @media(max-width:768px){
-            .mobile-menu-toggle{
-                display:block;
-            }
-
-            .sidebar{
-                transform: translateX(-100%);
-                width:260px;
-            }
-
-            .sidebar.active{
-                transform: translateX(0);
-            }
-
-            .main{
-                margin-left:0;
-                width:100%;
-            }
-
-            .header{
-                padding:15px 20px;
-            }
-
-            .header h1{
-                font-size:20px;
-            }
-
-            .content{
-                padding:20px;
-            }
-
-            .cards{
-                grid-template-columns:1fr;
-            }
-
-            .table-header{
-                flex-direction:column;
-                align-items:flex-start;
-            }
-
-            .search-box input{
-                width:100%;
-            }
-
-            .table-actions{
-                width:100%;
-                justify-content:space-between;
+    <title>@yield('title', 'LumenTrade')</title>
+    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'dark-bg': '#0b1220',
+                        'dark-surface': '#0f1724',
+                        'dark-sidebar': '#071029',
+                        'green-primary': '#10b981',
+                        'green-secondary': '#059669',
+                    },
+                    fontFamily: {
+                        'sans': ['Inter', 'ui-sans-serif', 'system-ui'],
+                    },
+                }
             }
         }
-
-        /* Logout confirmation modal */
-        .modal-overlay{
-            position:fixed;
-            inset:0;
-            background:rgba(2,6,23,0.6);
-            display:none;
-            align-items:center;
-            justify-content:center;
-            z-index:2000;
-        }
-        .modal-overlay.show{display:flex}
-        .modal-content{
-            background:var(--surface);
-            width:min(420px, calc(100% - 40px));
-            border-radius:12px;
-            box-shadow:0 20px 50px rgba(2,6,23,0.3);
-            padding:20px;
-            text-align:left;
-            border:1px solid var(--card-border);
-        }
-        .modal-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
-        .modal-title{font-weight:700;color:var(--text)}
-        .modal-body{color:var(--muted);margin-bottom:16px}
-        .modal-footer{display:flex;justify-content:flex-end;gap:10px}
-        .dark .modal-content{background:rgba(255,255,255,0.02);border-color:rgba(255,255,255,0.03)}
-
-    </style>
+    </script>
 </head>
-<body>
-    <div class="layout">
+<body class="bg-dark-bg text-gray-100 font-sans">
+    <div class="flex min-h-screen">
         <!-- Sidebar -->
-        <aside class="sidebar" id="sidebar">
-            <div class="logo">Admin Panel</div>
-            <nav class="menu">
-                <a href="{{ route('dashboard.index') }}" class="{{ request()->routeIs('dashboard') ? 'active' : '' }}">
-                    <span>📊</span>
-                    <span>Dashboard</span>
-                </a>
-                <a href="#" class="{{ request()->routeIs('aspirasi.*') ? 'active' : '' }}">
-                    <span>💬</span>
-                    <span>Aspirasi</span>
-                </a>
-                <a href="{{ route('siswa.index') }}" class="{{ request()->routeIs('siswa.*') ? 'active' : '' }}">
-                    <span>👥</span>
-                    <span>Siswa</span>
-                </a>
-                <a href="{{ route('kategori.index') }}" class="{{ request()->routeIs('kategori.*') ? 'active' : '' }}">
-                    <span>📁</span>
-                    <span>Kategori</span>
-                </a>
-                <a href="{{ route('admin.users.index') }}" class="{{ request()->routeIs('admin.users.*') ? 'active' : '' }}">
-                    <span>⚙️</span>
-                    <span>Admin</span>
-                </a>
+        <aside class="w-64 bg-dark-sidebar text-white p-5 fixed h-full overflow-y-auto z-50 transition-all duration-300" id="sidebar">
+            <!-- Logo -->
+            <div class="flex items-center gap-3 mb-10">
+                <div class="w-10 h-10 bg-green-primary rounded-lg flex items-center justify-center">
+                    <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M12 2L2 7v10c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V7l-10-5z"/>
+                    </svg>
+                </div>
+                <span class="text-xl font-bold">LumenTrade</span>
+            </div>
+
+            <!-- Main Menu -->
+            <nav class="space-y-6">
+                <div>
+                    <h3 class="text-xs uppercase text-gray-400 font-semibold mb-3">Main Menu</h3>
+                    <div class="space-y-2">
+                        <a href="{{ route('dashboard.index') }}" class="sidebar-item {{ request()->routeIs('dashboard') ? 'active' : '' }}">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
+                            </svg>
+                            <span>Dashboard</span>
+                        </a>
+                        <a href="{{ route('aspirasi.index') }}" class="sidebar-item {{ request()->routeIs('aspirasi.*') ? 'active' : '' }}">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/>
+                            </svg>
+                            <span>Portfolio</span>
+                        </a>
+                        <a href="#" class="sidebar-item">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"/>
+                            </svg>
+                            <span>Swap</span>
+                        </a>
+                        <a href="#" class="sidebar-item">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+                            </svg>
+                            <span>Market Trends</span>
+                        </a>
+                        <a href="#" class="sidebar-item">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                            </svg>
+                            <span>Messages</span>
+                        </a>
+                    </div>
+                </div>
+
+                <div>
+                    <h3 class="text-xs uppercase text-gray-400 font-semibold mb-3">Manage</h3>
+                    <div class="space-y-2">
+                        <a href="{{ route('kategori.index') }}" class="sidebar-item {{ request()->routeIs('kategori.*') ? 'active' : '' }}">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v1a1 1 0 001 1h4a1 1 0 001-1v-1m3-2V8a2 2 0 00-2-2H8a2 2 0 00-2 2v8m5-4h.01"/>
+                            </svg>
+                            <span>Reports</span>
+                        </a>
+                        <a href="#" class="sidebar-item">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                            </svg>
+                            <span>Calendar</span>
+                        </a>
+                    </div>
+                </div>
+
+                <div>
+                    <h3 class="text-xs uppercase text-gray-400 font-semibold mb-3">Settings</h3>
+                    <div class="space-y-2">
+                        <a href="#" class="sidebar-item">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                            </svg>
+                            <span>Settings</span>
+                        </a>
+                        <a href="#" class="sidebar-item">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+                            </svg>
+                            <span>Security</span>
+                        </a>
+                    </div>
+                </div>
             </nav>
+
+            <!-- Upgrade Card -->
+            <div class="mt-8 bg-gradient-to-r from-green-primary to-green-secondary rounded-xl p-5">
+                <h4 class="font-semibold text-white mb-2">Upgrade To Pro</h4>
+                <p class="text-xs text-gray-100 mb-4">Empower your apps with hottest trends and real-time news.</p>
+                <button class="w-full bg-white text-green-primary font-semibold py-2 px-4 rounded-lg hover:bg-gray-100 transition-colors">
+                    Get Started
+                </button>
+            </div>
         </aside>
 
-        <!-- Main -->
-        <div class="main">
+        <!-- Main Content -->
+        <div class="ml-64 flex-1 transition-all duration-300" id="mainContent">
             <!-- Header -->
-            <header class="header">
-                <div style="display:flex;align-items:center;gap:15px;">
-                    <button class="mobile-menu-toggle" onclick="toggleSidebar()">☰</button>
-                    @yield('header')
-                </div>
-                <div class="header-actions">
-                    @yield('header-actions')
-
-                    <button id="themeToggle" class="btn btn-secondary" aria-pressed="false" title="Toggle dark mode">🌙</button>
-
-                    <div class="profile" id="profileBtn" tabindex="0" aria-haspopup="true" aria-expanded="false" role="button">
-                        <div class="avatar">A</div>
-                        <div class="profile-info">
-                            <span class="profile-name">Admin</span>
-                            <span class="profile-role">Administrator</span>
-                        </div>
+            <header class="bg-dark-surface border-b border-gray-800 px-8 py-6">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center gap-4">
+                        <button class="lg:hidden text-gray-300 hover:text-white" onclick="toggleSidebar()">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                            </svg>
+                        </button>
+                        @yield('header')
                     </div>
+                    
+                    <div class="flex items-center gap-4">
+                        <!-- Search Bar -->
+                        <div class="hidden md:flex items-center bg-gray-800 rounded-lg px-4 py-2">
+                            <svg class="w-5 h-5 text-gray-400 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                            </svg>
+                            <input type="text" placeholder="Search..." class="bg-transparent text-gray-100 placeholder-gray-400 outline-none w-48">
+                        </div>
 
-                    <div class="profile-menu" id="profileMenu" role="menu" aria-hidden="true">
-                        <a href="#" class="profile-menu-item">Profil</a>
-                        <button type="button" class="profile-menu-item" id="logoutBtn">Logout</button>
-                        <form id="logoutForm" action="{{ route('logout') }}" method="POST" style="display:none;">
-                            @csrf
-                        </form>
+                        <!-- Profile -->
+                        <div class="relative">
+                            <button class="flex items-center gap-3 bg-gray-800 rounded-lg px-4 py-2 hover:bg-gray-700 transition-colors" onclick="toggleProfileMenu()">
+                                <div class="w-8 h-8 bg-green-primary rounded-full flex items-center justify-center">
+                                    <span class="text-white font-semibold text-sm">A</span>
+                                </div>
+                                <div class="text-left">
+                                    <div class="text-sm font-medium text-gray-100">Admin</div>
+                                    <div class="text-xs text-gray-400">Administrator</div>
+                                </div>
+                            </button>
+                            
+                            <!-- Profile Dropdown -->
+                            <div class="absolute right-0 mt-2 w-48 bg-gray-800 rounded-lg shadow-lg border border-gray-700 hidden" id="profileMenu">
+                                <a href="#" class="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-700 hover:text-white rounded-t-lg">Profile</a>
+                                <form action="{{ route('logout') }}" method="POST" class="block">
+                                    @csrf
+                                    <button type="submit" class="w-full text-left px-4 py-2 text-sm text-gray-300 hover:bg-gray-700 hover:text-white rounded-b-lg">Logout</button>
+                                </form>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </header>
 
-            <!-- Content -->
-            <main class="content">
+            <!-- Page Content -->
+            <main class="p-8">
                 @yield('content')
             </main>
         </div>
     </div>
 
-    @if(session('success'))
-        <div id="globalToast" class="toast success" role="status" aria-live="polite">
-            <div class="toast-body">{{ session('success') }}</div>
-            <button id="toastClose" class="close-btn" aria-label="Tutup">×</button>
-        </div>
-    @endif
-
     <script>
         function toggleSidebar() {
             const sidebar = document.getElementById('sidebar');
-            sidebar.classList.toggle('active');
+            const mainContent = document.getElementById('mainContent');
+            
+            sidebar.classList.toggle('-translate-x-full');
+            mainContent.classList.toggle('ml-0');
+            mainContent.classList.toggle('ml-64');
         }
 
-        // Close sidebar when clicking outside on mobile
-        document.addEventListener('click', function(event) {
-            const sidebar = document.getElementById('sidebar');
-            const toggle = document.querySelector('.mobile-menu-toggle');
+        function toggleProfileMenu() {
+            const menu = document.getElementById('profileMenu');
+            menu.classList.toggle('hidden');
+        }
 
-            if (window.innerWidth <= 768 &&
-                !sidebar.contains(event.target) &&
-                !toggle.contains(event.target) &&
-                sidebar.classList.contains('active')) {
-                sidebar.classList.remove('active');
+        // Close profile menu when clicking outside
+        document.addEventListener('click', function(event) {
+            const profileMenu = document.getElementById('profileMenu');
+            const profileButton = event.target.closest('button[onclick="toggleProfileMenu()"]');
+            
+            if (!profileButton && !profileMenu.contains(event.target)) {
+                profileMenu.classList.add('hidden');
             }
         });
 
-        /* Theme (dark mode) ------------------------------------------------- */
-        (function(){
-            const themeToggle = document.getElementById('themeToggle');
-            const root = document.documentElement;
-            const stored = localStorage.getItem('theme');
+        // Mobile responsiveness
+        if (window.innerWidth < 1024) {
+            document.getElementById('sidebar').classList.add('-translate-x-full');
+            document.getElementById('mainContent').classList.remove('ml-64');
+            document.getElementById('mainContent').classList.add('ml-0');
+        }
 
-            function applyTheme(isDark){
-                if(isDark){
-                    root.classList.add('dark');
-                    themeToggle && themeToggle.setAttribute('aria-pressed','true');
-                    themeToggle && (themeToggle.textContent = '☀️');
-                } else {
-                    root.classList.remove('dark');
-                    themeToggle && themeToggle.setAttribute('aria-pressed','false');
-                    themeToggle && (themeToggle.textContent = '🌙');
-                }
+        window.addEventListener('resize', function() {
+            const sidebar = document.getElementById('sidebar');
+            const mainContent = document.getElementById('mainContent');
+            
+            if (window.innerWidth >= 1024) {
+                sidebar.classList.remove('-translate-x-full');
+                mainContent.classList.remove('ml-0');
+                mainContent.classList.add('ml-64');
+            } else {
+                sidebar.classList.add('-translate-x-full');
+                mainContent.classList.remove('ml-64');
+                mainContent.classList.add('ml-0');
             }
-
-            // initialise from storage / prefers-color-scheme
-            if(stored === 'dark') applyTheme(true);
-            else if(stored === 'light') applyTheme(false);
-            else applyTheme(window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches);
-
-            themeToggle && themeToggle.addEventListener('click', function(){
-                const isDark = document.documentElement.classList.toggle('dark');
-                localStorage.setItem('theme', isDark ? 'dark' : 'light');
-                applyTheme(isDark);
-            });
-        })();
-
-        /* Profile dropdown -------------------------------------------------- */
-        (function(){
-            const profileBtn = document.getElementById('profileBtn');
-            const profileMenu = document.getElementById('profileMenu');
-
-            function closeMenu(){
-                profileMenu && profileMenu.classList.remove('show');
-                profileBtn && profileBtn.setAttribute('aria-expanded','false');
-                profileMenu && profileMenu.setAttribute('aria-hidden','true');
-            }
-            function openMenu(){
-                profileMenu && profileMenu.classList.add('show');
-                profileBtn && profileBtn.setAttribute('aria-expanded','true');
-                profileMenu && profileMenu.setAttribute('aria-hidden','false');
-            }
-
-            profileBtn && profileBtn.addEventListener('click', function(e){
-                e.stopPropagation();
-                profileMenu.classList.contains('show') ? closeMenu() : openMenu();
-            });
-
-            document.addEventListener('click', function(e){
-                if(profileMenu && !profileMenu.contains(e.target) && profileBtn && !profileBtn.contains(e.target)){
-                    closeMenu();
-                }
-            });
-
-            document.addEventListener('keydown', function(e){ if(e.key === 'Escape') closeMenu(); });
-        })();
-
-        // Auto-hide alerts after 5 seconds
-        setTimeout(() => {
-            const alerts = document.querySelectorAll('.alert');
-            alerts.forEach(alert => {
-                alert.style.display = 'none';
-            });
-        }, 5000);
-
-        /* Logout confirmation modal behaviour */
-        // create modal HTML and append to body
-        (function(){
-            const modalHtml = `
-                <div class="modal-overlay" id="logoutModal" aria-hidden="true">
-                    <div class="modal-content" role="dialog" aria-modal="true" aria-labelledby="logoutModalTitle">
-                        <div class="modal-header">
-                            <div class="modal-title" id="logoutModalTitle">Konfirmasi Logout</div>
-                            <button id="logoutModalClose" aria-label="Tutup" style="background:none;border:none;font-size:18px;cursor:pointer">×</button>
-                        </div>
-                        <div class="modal-body">Apakah anda yakin ingin logout?</div>
-                        <div class="modal-footer">
-                            <button class="btn btn-secondary" id="logoutCancel">Batal</button>
-                            <button class="btn btn-danger" id="logoutConfirm">Ya, Logout</button>
-                        </div>
-                    </div>
-                </div>
-            `;
-            document.body.insertAdjacentHTML('beforeend', modalHtml);
-
-            const logoutBtn = document.getElementById('logoutBtn');
-            const logoutModal = document.getElementById('logoutModal');
-            const logoutCancel = document.getElementById('logoutCancel');
-            const logoutClose = document.getElementById('logoutModalClose');
-            const logoutConfirm = document.getElementById('logoutConfirm');
-            const logoutForm = document.getElementById('logoutForm');
-
-            function openModal(){
-                logoutModal.classList.add('show');
-                logoutModal.setAttribute('aria-hidden', 'false');
-            }
-            function closeModal(){
-                logoutModal.classList.remove('show');
-                logoutModal.setAttribute('aria-hidden', 'true');
-            }
-
-            logoutBtn && logoutBtn.addEventListener('click', (e)=>{ e.preventDefault(); openModal(); });
-            logoutCancel && logoutCancel.addEventListener('click', closeModal);
-            logoutClose && logoutClose.addEventListener('click', closeModal);
-            logoutModal && logoutModal.addEventListener('click', function(e){ if(e.target === logoutModal) closeModal(); });
-            document.addEventListener('keydown', function(e){ if(e.key === 'Escape') closeModal(); });
-
-            logoutConfirm && logoutConfirm.addEventListener('click', function(){
-                // submit the actual logout form
-                logoutForm && logoutForm.submit();
-            });
-        })();
+        });
     </script>
 </body>
 </html>

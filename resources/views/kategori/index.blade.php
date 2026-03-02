@@ -104,7 +104,7 @@
                     <tr>
                         <th>No</th>
                         <th>Nama Kategori</th>
-                        <th>Keterangan</th>
+                        <th>Keterangan</th>     
                         <th>Jumlah Aspirasi</th>
                         <th>Status</th>
                         <th>Aksi</th>

@@ -13,11 +13,8 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('siswas', function (Blueprint $table) {
-            $table->id();
-             $table->integer('nis');
-              $table->string('kelas');
-            $table->timestamps();
+        Schema::table('asprirasi', function (Blueprint $table) {
+                $table->foreignId('user_id')->after('id')->constrained('users')->onDelete('cascade');
         });
     }
 
@@ -28,6 +25,8 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('siswas');
+        Schema::table('asprirasi', function (Blueprint $table) {
+            $table->dropForeign(['user_id']);
+            $table->dropColumn('user_id');        });
     }
 };

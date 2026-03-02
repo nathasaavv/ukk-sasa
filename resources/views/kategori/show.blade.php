@@ -13,7 +13,10 @@
     @endsection
 
     @section('header-actions')
-
+        <a href="{{ route('kategori.edit', $kategori->id) }}" class="btn btn-primary">
+            <span>✏️</span>
+            <span>Edit</span>
+        </a>
     @endsection
 
     @section('content')

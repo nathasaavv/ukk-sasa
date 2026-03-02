@@ -9,7 +9,6 @@
 
 
 @section('content')
-    <!-- Flash Messages -->
     @if(session('success'))
     <div class="alert alert-success">
         <span>✅</span>
@@ -24,7 +23,6 @@
     </div>
     @endif
 
-    <!-- Statistics Cards -->
     <div class="cards">
         <div class="card">
             <div class="card-header">
@@ -77,7 +75,7 @@
 
 
 
-    <!-- Quick Actions -->
+
     <div class="cards" style="margin-top:30px;">
         <div class="card">
             <h3>📝 Buat Aspirasi Baru</h3>
@@ -101,7 +99,7 @@
 
 @push('scripts')
 <script>
-// Search functionality for aspirasi table
+
 document.getElementById('searchAspirasi').addEventListener('input', function(e) {
     const searchTerm = e.target.value.toLowerCase();
     const rows = document.querySelectorAll('#aspirasiTableBody tr');
@@ -112,7 +110,7 @@ document.getElementById('searchAspirasi').addEventListener('input', function(e) 
     });
 });
 
-// Animate numbers on page load
+
 function animateValue(element, start, end, duration) {
     const range = end - start;
     const increment = range / (duration / 16);
@@ -129,7 +127,6 @@ function animateValue(element, start, end, duration) {
     }, 16);
 }
 
-// Animate card values on page load
 document.addEventListener('DOMContentLoaded', function() {
     const cardValues = document.querySelectorAll('.card-value');
     cardValues.forEach(element => {

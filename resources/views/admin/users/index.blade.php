@@ -31,6 +31,8 @@
                         <th>Nama</th>
                         <th>Email</th>
                         <th>Terdaftar</th>
+                        <th>NIS</th>
+                        <th>Role</th>
                         <th>Aksi</th>
                     </tr>
                 </thead>
@@ -41,6 +43,8 @@
                             <td>{{ $user->name }}</td>
                             <td>{{ $user->email }}</td>
                             <td>{{ optional($user->created_at)->format('d M Y') ?? '-' }}</td>
+                            <td>{{ $user->nis }}</td>
+                            <td>{{ $user->role }}</td>
                             <td>
                                 <a href="{{ route('admin.users.edit', $user) }}" class="btn btn-sm btn-secondary">Edit</a>
                                 <form action="{{ route('admin.users.destroy', $user) }}" method="POST" style="display:inline-block;margin-left:8px;" onsubmit="return confirm('Hapus user ini?');">

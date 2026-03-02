@@ -13,9 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->string('nis')->nullable()->after('email');
-            $table->enum('role', ['admin', 'siswa'])->default('siswa')->after('nis');
+        Schema::table('users', function (Blueprint $table) { 
+            if (!Schema::hasColumn('users', 'nis','role')) {
+                $table->string('nis')->nullable()->after('email');
+                $table->enum('role', ['admin', 'siswa'])->default('siswa')->after('nis');
+            }
         });
     }
 
@@ -27,8 +29,10 @@ return new class extends Migration
     public function down()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn('nis');
-            $table->dropColumn('role');
+            if (Schema::hasColumn('users', 'nis')) {
+                $table->dropColumn('nis');
+                $table->dropColumn('role');
+            }
         });
     }
 };

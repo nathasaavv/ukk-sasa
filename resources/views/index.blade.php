@@ -23,78 +23,148 @@
     </div>
     @endif
 
-    <div class="cards">
-        <div class="card">
-            <div class="card-header">
-                <div class="card-icon blue">📊</div>
-            </div>
-            <h3>Total Aspirasi</h3>
-            <div class="card-value">120</div>
-            <div class="card-change positive">
-                <span>↑</span>
-                <span>12% dari bulan lalu</span>
-            </div>
-        </div>
-
-        <div class="card">
-            <div class="card-header">
-                <div class="card-icon yellow">⏳</div>
-            </div>
-            <h3>Menunggu</h3>
-            <div class="card-value">35</div>
-            <div class="card-change negative">
-                <span>↑</span>
-                <span>5 dari kemarin</span>
+    <div class="flex flex-wrap gap-6 items-stretch">
+        <div class="card-dark w-full sm:w-1/2 md:w-1/3 lg:w-1/4">
+            <div class="flex items-start justify-between">
+                <div>
+                    <h3 class="text-sm font-semibold text-gray-200">Total Aspirasi</h3>
+                    <div class="card-value text-2xl font-bold mt-3">120</div>
+                    <div class="text-sm text-gray-400 mt-2">↑ 12% dari bulan lalu</div>
+                </div>
+                <div class="w-12 h-12 rounded-lg bg-green-primary flex items-center justify-center text-white text-lg">📊</div>
             </div>
         </div>
 
-        <div class="card">
-            <div class="card-header">
-                <div class="card-icon green">✅</div>
-            </div>
-            <h3>Selesai</h3>
-            <div class="card-value">85</div>
-            <div class="card-change positive">
-                <span>↑</span>
-                <span>8% peningkatan</span>
+        <div class="card-dark w-full sm:w-1/2 md:w-1/3 lg:w-1/4">
+            <div class="flex items-start justify-between">
+                <div>
+                    <h3 class="text-sm font-semibold text-gray-200">Menunggu</h3>
+                    <div class="card-value text-2xl font-bold mt-3">35</div>
+                    <div class="text-sm text-gray-400 mt-2">↑ 5 dari kemarin</div>
+                </div>
+                <div class="w-12 h-12 rounded-lg bg-yellow-400 flex items-center justify-center text-black text-lg">⏳</div>
             </div>
         </div>
 
-        <div class="card">
-            <div class="card-header">
-                <div class="card-icon purple">👥</div>
+        <div class="card-dark w-full sm:w-1/2 md:w-1/3 lg:w-1/4">
+            <div class="flex items-start justify-between">
+                <div>
+                    <h3 class="text-sm font-semibold text-gray-200">Selesai</h3>
+                    <div class="card-value text-2xl font-bold mt-3">85</div>
+                    <div class="text-sm text-gray-400 mt-2">↑ 8% peningkatan</div>
+                </div>
+                <div class="w-12 h-12 rounded-lg bg-green-secondary flex items-center justify-center text-white text-lg">✅</div>
             </div>
-            <h3>Total Siswa</h3>
-            <div class="card-value">540</div>
-            <div class="card-change positive">
-                <span>↑</span>
-                <span>2% pertumbuhan</span>
+        </div>
+
+  <!-- ===== DASHBOARD EXTRA SECTION ===== -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-8">
+
+    <!-- Welcome Card -->
+    <div class="card-dark col-span-1 p-6">
+        <h2 class="text-lg font-semibold text-white mb-2">
+            👋 Selamat Datang
+        </h2>
+        <p class="text-gray-400 text-sm">
+            Pantau aspirasi siswa secara real-time. 
+            Sistem akan membantu memonitor laporan yang masuk dan progres penyelesaian.
+        </p>
+
+        <div class="mt-4">
+            <a href="#" class="bg-green-primary px-4 py-2 rounded-lg text-white text-sm hover:opacity-80 transition">
+                + Buat Aspirasi
+            </a>
+        </div>
+    </div>
+
+    <!-- Progress Status -->
+    <div class="card-dark col-span-1 p-6">
+        <h2 class="text-lg font-semibold text-white mb-4">
+            📊 Progress Aspirasi
+        </h2>
+
+        <div class="space-y-4">
+
+            <div>
+                <div class="flex justify-between text-sm text-gray-300 mb-1">
+                    <span>Selesai</span>
+                    <span>70%</span>
+                </div>
+                <div class="w-full bg-gray-700 rounded-full h-2">
+                    <div class="bg-green-secondary h-2 rounded-full" style="width:70%"></div>
+                </div>
             </div>
+
+            <div>
+                <div class="flex justify-between text-sm text-gray-300 mb-1">
+                    <span>Menunggu</span>
+                    <span>30%</span>
+                </div>
+                <div class="w-full bg-gray-700 rounded-full h-2">
+                    <div class="bg-yellow-400 h-2 rounded-full" style="width:30%"></div>
+                </div>
+            </div>
+
         </div>
     </div>
 
+    <!-- Mini Chart -->
+    <div class="card-dark col-span-1 p-6">
+        <h2 class="text-lg font-semibold text-white mb-4">
+            📈 Statistik Mingguan
+        </h2>
 
-
-
-    <div class="cards" style="margin-top:30px;">
-        <div class="card">
-            <h3>📝 Buat Aspirasi Baru</h3>
-            <p class="text-muted" style="font-size:14px;margin:15px 0;">Tambahkan aspirasi baru dari siswa</p>
-            <a href="#" class="btn btn-primary">Buat Sekarang</a>
+        <div class="flex items-end gap-2 h-32">
+            <div class="bg-green-primary w-6 rounded" style="height:40%"></div>
+            <div class="bg-green-primary w-6 rounded" style="height:65%"></div>
+            <div class="bg-green-primary w-6 rounded" style="height:30%"></div>
+            <div class="bg-green-primary w-6 rounded" style="height:80%"></div>
+            <div class="bg-green-primary w-6 rounded" style="height:55%"></div>
+            <div class="bg-green-primary w-6 rounded" style="height:70%"></div>
+            <div class="bg-green-primary w-6 rounded" style="height:90%"></div>
         </div>
 
-        <div class="card">
-            <h3>📁 Kelola Kategori</h3>
-            <p class="text-muted" style="font-size:14px;margin:15px 0;">Atur kategori aspirasi</p>
-            <a href="{{ route('kategori.index') }}" class="btn btn-secondary">Kelola</a>
-        </div>
-
-        <div class="card">
-            <h3>📊 Laporan Bulanan</h3>
-            <p class="text-muted" style="font-size:14px;margin:15px 0;">Download laporan bulanan</p>
-            <a href="#" class="btn btn-success">Download</a>
-        </div>
+        <p class="text-xs text-gray-400 mt-3">
+            Aktivitas aspirasi 7 hari terakhir
+        </p>
     </div>
+
+</div>
+
+
+<!-- Recent Activity -->
+<div class="card-dark mt-8 p-6">
+    <h2 class="text-lg font-semibold text-white mb-4">
+        🕒 Aktivitas Terbaru
+    </h2>
+
+    <div class="space-y-4 text-sm">
+
+        <div class="flex justify-between border-b border-gray-700 pb-2">
+            <span class="text-gray-300">Aspirasi baru ditambahkan</span>
+            <span class="text-gray-500">2 menit lalu</span>
+        </div>
+
+        <div class="flex justify-between border-b border-gray-700 pb-2">
+            <span class="text-gray-300">Status aspirasi diperbarui</span>
+            <span class="text-gray-500">10 menit lalu</span>
+        </div>
+
+        <div class="flex justify-between border-b border-gray-700 pb-2">
+            <span class="text-gray-300">Admin memberikan tanggapan</span>
+            <span class="text-gray-500">1 jam lalu</span>
+        </div>
+
+        <div class="flex justify-between">
+            <span class="text-gray-300">Aspirasi selesai diproses</span>
+            <span class="text-gray-500">Kemarin</span>
+        </div>
+
+    </div>
+</div>
+
+
+   
 @endsection
 
 @push('scripts')

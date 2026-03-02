@@ -14,7 +14,8 @@
                         'dark-bg': '#0b1220',
                         'dark-surface': '#0f1724',
                         'dark-sidebar': '#071029',
-                        'green-primary': '#10b981',
+                        'green-primary': '#10b981'
+                        ,
                         'green-secondary': '#059669',
                     },
                     fontFamily: {
@@ -36,7 +37,7 @@
                         <path d="M12 2L2 7v10c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V7l-10-5z"/>
                     </svg>
                 </div>
-                <span class="text-xl font-bold">LumenTrade</span>
+                <span class="text-xl font-bold">Aspirasi Siswa</span>
             </div>
 
             <!-- Main Menu -->
@@ -54,7 +55,7 @@
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/>
                             </svg>
-                            <span>Portfolio</span>
+                            <span>Aspirasi Siswa</span>
                         </a>
                         <a href="#" class="sidebar-item">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -78,23 +79,21 @@
                 </div>
 
                 <div>
-                    <h3 class="text-xs uppercase text-gray-400 font-semibold mb-3">Manage</h3>
                     <div class="space-y-2">
                         <a href="{{ route('kategori.index') }}" class="sidebar-item {{ request()->routeIs('kategori.*') ? 'active' : '' }}">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v1a1 1 0 001 1h4a1 1 0 001-1v-1m3-2V8a2 2 0 00-2-2H8a2 2 0 00-2 2v8m5-4h.01"/>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
                             </svg>
-                            <span>Reports</span>
+                            <span>Kategori</span>
                         </a>
-                        <a href="#" class="sidebar-item">
+                        <a href="" class="sidebar-item">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
                             </svg>
-                            <span>Calendar</span>
+                            <span>User</span>
                         </a>
                     </div>
                 </div>
-
                 <div>
                     <h3 class="text-xs uppercase text-gray-400 font-semibold mb-3">Settings</h3>
                     <div class="space-y-2">
@@ -115,14 +114,6 @@
                 </div>
             </nav>
 
-            <!-- Upgrade Card -->
-            <div class="mt-8 bg-gradient-to-r from-green-primary to-green-secondary rounded-xl p-5">
-                <h4 class="font-semibold text-white mb-2">Upgrade To Pro</h4>
-                <p class="text-xs text-gray-100 mb-4">Empower your apps with hottest trends and real-time news.</p>
-                <button class="w-full bg-white text-green-primary font-semibold py-2 px-4 rounded-lg hover:bg-gray-100 transition-colors">
-                    Get Started
-                </button>
-            </div>
         </aside>
 
         <!-- Main Content -->

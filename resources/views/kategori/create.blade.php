@@ -3,173 +3,135 @@
 @section('title', 'Tambah Kategori')
 
 @section('header')
-    <div style="display:flex;align-items:center;gap:15px;">
-        <a href="{{ route('kategori.index') }}" class="btn btn-secondary">
+    <div class="flex items-center gap-4">
+        <a href="{{ route('kategori.index') }}" class="btn-secondary inline-flex items-center gap-2">
             <span>←</span>
             <span>Kembali</span>
         </a>
-        <h1>Tambah Kategori</h1>
+        <h1 class="text-xl font-semibold">Tambah Kategori</h1>
     </div>
 @endsection
 
 @section('content')
-    <div style="display:grid;grid-template-columns:1fr 350px;gap:30px;">
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
         <!-- Form Container -->
-        <div class="form-container">
-            <div style="margin-bottom:25px;">
-                <h2 style="font-size:20px;color:var(--text);margin-bottom:8px;">Form Tambah Kategori</h2>
-                <p class="text-muted" style="font-size:14px;">Isi data kategori baru di bawah ini</p>
+        <div class="lg:col-span-2">
+            <div class="mb-6">
+                <h2 class="text-lg font-semibold text-gray-100">Form Tambah Kategori</h2>
+                <p class="text-gray-400">Isi data kategori baru di bawah ini</p>
             </div>
 
-            <!-- Flash Messages -->
             @if(session('success'))
-            <div class="alert alert-success">
-                <span>✅</span>
-                <span>{{ session('success') }}</span>
-            </div>
+                <div class="mb-4 p-3 rounded-md bg-green-600 text-white">✅ {{ session('success') }}</div>
             @endif
 
             @if(session('error'))
-            <div class="alert alert-error">
-                <span>❌</span>
-                <span>{{ session('error') }}</span>
-            </div>
+                <div class="mb-4 p-3 rounded-md bg-red-600 text-white">❌ {{ session('error') }}</div>
             @endif
 
             @if($errors->any())
-            <div class="alert alert-warning">
-                <span>⚠️</span>
-                <div>
+                <div class="mb-4 p-3 rounded-md bg-yellow-500 text-black">
                     <strong>Perhatian:</strong>
-                    <ul style="margin:5px 0 0 0;padding-left:20px;">
+                    <ul class="mt-2 list-disc list-inside">
                         @foreach($errors->all() as $error)
                         <li>{{ $error }}</li>
                         @endforeach
                     </ul>
                 </div>
-            </div>
             @endif
 
-            <form action="{{ route('kategori.store') }}" method="POST" style="display:flex;flex-direction:column;gap:24px;">
+            <form action="{{ route('kategori.store') }}" method="POST" class="space-y-4">
                 @csrf
 
                 <div class="form-group">
-                    <label for="nama">Nama Kategori <span style="color:#ef4444;">*</span></label>
-                    <input type="text"
-                           id="nama"
-                           name="nama"
-                           class="form-control"
-                           placeholder="Masukkan nama kategori"
-                           value="{{ old('nama') }}"
-                           required>
-                    <small class="text-muted" style="font-size:12px;margin-top:4px;display:block;">
-                        Contoh: Fasilitas Sekolah, Kegiatan Ekstrakurikuler, dll
-                    </small>
+                    <label for="nama" class="block text-sm text-gray-200">Nama Kategori <span class="text-red-500">*</span></label>
+                    <input type="text" id="nama" name="nama" value="{{ old('nama') }}" placeholder="Masukkan nama kategori" required autofocus aria-required="true"
+                        class="mt-2 w-full input-dark @error('nama') ring-2 ring-red-500 @enderror"
+                    >
+                    @error('nama')
+                        <p class="text-sm text-red-400 mt-2">{{ $message }}</p>
+                    @else
+                        <small class="text-gray-400 text-sm mt-2 block">Contoh: Fasilitas Sekolah, Kegiatan Ekstrakurikuler, dll</small>
+                    @enderror
                 </div>
 
                 <div class="form-group">
-                    <label for="ket_kategori">Keterangan</label>
-                    <textarea id="ket_kategori"
-                              name="ket_kategori"
-                              class="form-control"
-                              rows="4"
-                              placeholder="Tambahkan keterangan untuk kategori ini...">{{ old('ket_kategori') }}</textarea>
-                    <small class="text-muted" style="font-size:12px;margin-top:4px;display:block;">
-                        Opsional: Berikan deskripsi detail tentang kategori ini
-                    </small>
+                    <label for="ket_kategori" class="block text-sm text-gray-200">Keterangan</label>
+                    <textarea id="ket_kategori" name="ket_kategori" class="input-dark mt-2 w-full p-3 resize-none min-h-[96px] @error('ket_kategori') ring-2 ring-red-500 @enderror" rows="4" placeholder="Tambahkan keterangan untuk kategori ini...">{{ old('ket_kategori') }}</textarea>
+                    @error('ket_kategori')
+                        <p class="text-sm text-red-400 mt-2">{{ $message }}</p>
+                    @else
+                        <small class="text-gray-400 text-sm mt-2 block">Opsional: Berikan deskripsi detail tentang kategori ini</small>
+                    @enderror
                 </div>
 
                 <div class="form-group">
-                    <label>Status Kategori <span style="color:#ef4444;">*</span></label>
-                    <div style="display:flex;gap:20px;margin-top:8px;">
-                        <label style="display:flex;align-items:center;gap:8px;cursor:pointer;">
-                            <input type="radio"
-                                   name="status"
-                                   value="1"
-                                   {{ old('status', '1') == '1' ? 'checked' : '' }}
-                                   style="width:18px;height:18px;">
-                            <span style="color:var(--text);font-size:14px;">Aktif</span>
+                    <label class="block text-sm text-gray-200">Status Kategori <span class="text-red-500">*</span></label>
+                    <div class="flex items-center gap-6 mt-2">
+                        <label class="inline-flex items-center gap-2 cursor-pointer">
+                            <input type="radio" name="status" value="1" {{ old('status', '1') == '1' ? 'checked' : '' }} class="form-radio" aria-checked="{{ old('status', '1') == '1' ? 'true' : 'false' }}" />
+                            <span class="text-sm text-gray-200">Aktif</span>
                         </label>
-                        <label style="display:flex;align-items:center;gap:8px;cursor:pointer;">
-                            <input type="radio"
-                                   name="status"
-                                   value="0"
-                                   {{ old('status') == '0' ? 'checked' : '' }}
-                                   style="width:18px;height:18px;">
-                            <span style="color:var(--text);font-size:14px;">Tidak Aktif</span>
+                        <label class="inline-flex items-center gap-2 cursor-pointer">
+                            <input type="radio" name="status" value="0" {{ old('status') == '0' ? 'checked' : '' }} class="form-radio" aria-checked="{{ old('status') == '0' ? 'true' : 'false' }}" />
+                            <span class="text-sm text-gray-200">Tidak Aktif</span>
                         </label>
                     </div>
-                    <small class="text-muted" style="font-size:12px;margin-top:4px;display:block;">
-                        Pilih status untuk kategori ini. Default: Aktif
-                    </small>
+                    @error('status')
+                        <p class="text-sm text-red-400 mt-2">{{ $message }}</p>
+                    @enderror
+                    <small class="text-gray-400 text-sm mt-2 block">Pilih status untuk kategori ini. Default: Aktif</small>
                 </div>
 
-                <div style="display:flex;gap:12px;flex-wrap:wrap;">
-                    <button type="button"
-                            class="btn btn-secondary"
-                            onclick="window.history.back()">
-                        <span>Batal</span>
-                    </button>
-                    <button type="submit" class="btn btn-primary">
-                        <span>Simpan Kategori</span>
-                    </button>
+                <div class="flex items-center gap-3">
+                    <button type="button" class="btn-secondary" onclick="window.history.back()">Batal</button>
+                    <button type="submit" class="btn-primary" id="submitBtn"><span>💾</span> <span>Simpan Kategori</span></button>
                 </div>
             </form>
         </div>
 
         <!-- Info Sidebar -->
-        <div>
-            <!-- Tips Card -->
-            <div class="card" style="background:#f0f9ff;border:1px solid #bae6fd;margin-bottom:20px;">
-                <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px;">
-                    <div style="width:40px;height:40px;background:#0ea5e9;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:18px;">💡</div>
-                    <h3 style="color:#0369a1;font-size:16px;margin:0;">Tips Membuat Kategori</h3>
+        <aside class="space-y-6">
+            <div class="card-dark p-4">
+                <div class="flex items-start gap-3 mb-3">
+                    <div class="w-10 h-10 bg-blue-400 rounded-lg flex items-center justify-center text-white text-lg">💡</div>
+                    <div>
+                        <h3 class="text-sm font-semibold text-gray-100">Tips Membuat Kategori</h3>
+                        <p class="text-gray-400 text-sm mb-2">Beberapa tips singkat agar kategori mudah dipahami dan efektif.</p>
+                    </div>
                 </div>
-                <ul style="list-style:none;color:#0c4a6e;font-size:14px;line-height:1.6;margin:0;padding:0;">
-                    <li style="margin-bottom:12px;padding-left:20px;position:relative;">
-                        <span style="position:absolute;left:0;color:#0ea5e9;">•</span>
-                        Buat nama kategori yang jelas dan mudah dipahami
-                    </li>
-                    <li style="margin-bottom:12px;padding-left:20px;position:relative;">
-                        <span style="position:absolute;left:0;color:#0ea5e9;">•</span>
-                        Hindari nama yang terlalu panjang atau rumit
-                    </li>
-                    <li style="margin-bottom:12px;padding-left:20px;position:relative;">
-                        <span style="position:absolute;left:0;color:#0ea5e9;">•</span>
-                        Pertimbangkan kategori yang sering dibutuhkan siswa
-                    </li>
-                    <li style="padding-left:20px;position:relative;">
-                        <span style="position:absolute;left:0;color:#0ea5e9;">•</span>
-                        Contoh: Fasilitas, Akademik, Ekstrakurikuler, dll
-                    </li>
+                <ul class="text-sm text-gray-300 space-y-2 list-disc list-inside">
+                    <li>Buat nama kategori yang jelas dan mudah dipahami</li>
+                    <li>Hindari nama yang terlalu panjang atau rumit</li>
+                    <li>Pertimbangkan kategori yang sering dibutuhkan siswa</li>
+                    <li>Contoh: Fasilitas, Akademik, Ekstrakurikuler, dll</li>
                 </ul>
             </div>
 
-            <!-- Statistics Card -->
-            <div class="card">
-                <h3 style="font-size:16px;color:var(--text);margin-bottom:15px;">📊 Statistik Kategori</h3>
-                <div style="display:flex;flex-direction:column;gap:12px;">
-                    <div style="display:flex;justify-content:space-between;align-items:center;padding:12px;background:#f8fafc;border-radius:8px;">
-                        <span class="text-muted" style="font-size:14px;">Total Kategori</span>
-                        <strong style="color:var(--text);font-size:16px;">5</strong>
+            <div class="card-dark p-4">
+                <h3 class="text-sm font-semibold text-gray-100 mb-3">📊 Statistik Kategori</h3>
+                <div class="space-y-3">
+                    <div class="flex items-center justify-between bg-gray-800 p-3 rounded-md">
+                        <span class="text-sm text-gray-400">Total Kategori</span>
+                        <strong class="text-sm text-gray-100"></strong>
                     </div>
-                    <div style="display:flex;justify-content:space-between;align-items:center;padding:12px;background:#f8fafc;border-radius:8px;">
-                        <span class="text-muted" style="font-size:14px;">Kategori Aktif</span>
-                        <strong style="color:var(--text);font-size:16px;">4</strong>
+                    <div class="flex items-center justify-between bg-gray-800 p-3 rounded-md">
+                        <span class="text-sm text-gray-400">Kategori Aktif</span>
+                        <strong class="text-sm text-gray-100"></strong>
                     </div>
-                    <div style="display:flex;justify-content:space-between;align-items:center;padding:12px;background:#f8fafc;border-radius:8px;">
-                        <span class="text-muted" style="font-size:14px;">Total Aspirasi</span>
-                        <strong style="color:var(--text);font-size:16px;">23</strong>
+                    <div class="flex items-center justify-between bg-gray-800 p-3 rounded-md">
+                        <span class="text-sm text-gray-400">Total Aspirasi</span>
+                        <strong class="text-sm text-gray-100"></strong>
                     </div>
                 </div>
             </div>
-        </div>
+        </aside>
     </div>
 @endsection
 
 @push('scripts')
 <script>
-// Auto-resize textarea
+// Auto-resize textarea and enhance UX
 document.addEventListener('DOMContentLoaded', function() {
     const textarea = document.getElementById('ket_kategori');
     if (textarea) {
@@ -189,28 +151,27 @@ document.addEventListener('DOMContentLoaded', function() {
         if (!namaInput.value.trim()) {
             e.preventDefault();
             namaInput.focus();
-            namaInput.style.borderColor = '#ef4444';
+            namaInput.classList.add('ring-2', 'ring-red-500');
 
             setTimeout(() => {
-                namaInput.style.borderColor = '';
+                namaInput.classList.remove('ring-2', 'ring-red-500');
             }, 3000);
 
             return false;
         }
 
         // Show loading state
-        submitBtn.innerHTML = '<span>⏳</span><span>Menyimpan...</span>';
+        submitBtn.innerHTML = '<span>⏳</span><span> Menyimpan...</span>';
         submitBtn.disabled = true;
-        submitBtn.style.opacity = '0.7';
+        submitBtn.classList.add('opacity-70');
     });
 
     // Character counter for textarea
-    const textarea = document.getElementById('ket_kategori');
     const maxLength = 500;
 
     if (textarea) {
         const counter = document.createElement('div');
-        counter.style.cssText = 'text-align:right;color:var(--muted);font-size:12px;margin-top:4px;';
+        counter.className = 'text-right text-sm text-gray-400 mt-2';
         counter.textContent = '0 / ' + maxLength;
         textarea.parentNode.appendChild(counter);
 
@@ -219,11 +180,13 @@ document.addEventListener('DOMContentLoaded', function() {
             counter.textContent = length + ' / ' + maxLength;
 
             if (length > maxLength) {
-                counter.style.color = '#ef4444';
+                counter.classList.remove('text-gray-400');
+                counter.classList.add('text-red-500');
                 this.value = this.value.substring(0, maxLength);
                 counter.textContent = maxLength + ' / ' + maxLength;
             } else {
-                counter.style.color = 'var(--muted)';
+                counter.classList.remove('text-red-500');
+                counter.classList.add('text-gray-400');
             }
         });
     }

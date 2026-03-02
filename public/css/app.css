@@ -224,6 +224,10 @@
   --tw-translate-x: calc(calc(1 / 2 * 100%) * -1);
   translate: var(--tw-translate-x) var(--tw-translate-y);
 }
+.-translate-x-full {
+  --tw-translate-x: -100%;
+  translate: var(--tw-translate-x) var(--tw-translate-y);
+}
 .translate-x-full {
   --tw-translate-x: 100%;
   translate: var(--tw-translate-x) var(--tw-translate-y);
@@ -357,6 +361,9 @@
 .overflow-x-scroll {
   overflow-x: scroll;
 }
+.overflow-y-auto {
+  overflow-y: auto;
+}
 .overflow-y-hidden {
   overflow-y: hidden;
 }
@@ -401,8 +408,15 @@
 .border-transparent {
   border-color: transparent;
 }
+.bg-transparent {
+  background-color: transparent;
+}
 .bg-gradient-to-bl {
   --tw-gradient-position: to bottom left in oklab;
+  background-image: linear-gradient(var(--tw-gradient-stops));
+}
+.bg-gradient-to-r {
+  --tw-gradient-position: to right in oklab;
   background-image: linear-gradient(var(--tw-gradient-stops));
 }
 .via-transparent {
@@ -418,6 +432,9 @@
 }
 .text-center {
   text-align: center;
+}
+.text-left {
+  text-align: left;
 }
 .text-right {
   text-align: right;
@@ -531,6 +548,10 @@
 .duration-1000 {
   --tw-duration: 1000ms;
   transition-duration: 1000ms;
+}
+.outline-none {
+  --tw-outline-style: none;
+  outline-style: none;
 }
 .select-none {
   -webkit-user-select: none;

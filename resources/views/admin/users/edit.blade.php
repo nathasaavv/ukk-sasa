@@ -14,79 +14,104 @@
 @endsection
 
 @section('content')
-    <div class="form-container" style="max-width:600px;margin:0 auto;padding:20px;">
-        <form action="{{ route('admin.users.update', $user) }}" method="POST">
-            @csrf
-            @method('PUT')
-
-            <div class="form-group" style="margin-bottom:20px;">
-                <label for="name" style="display:block;margin-bottom:8px;font-weight:500;">Nama Lengkap</label>
-                <input type="text" id="name" name="name" class="form-control" value="{{ old('name', $user->name) }}" required style="width:100%;padding:12px;border:1px solid #ddd;border-radius:6px;">
-                @error('name')
-                    <div class="alert alert-error" style="margin-top:8px;padding:8px 12px;background:#fee;border-left:4px solid #dc2626;color:#dc2626;font-size:14px;">{{ $message }}</div>
-                @enderror
+    <div class="max-w-2xl mx-auto">
+        <div class="card-dark">
+            <div class="mb-6">
+                <h2 class="text-lg font-semibold text-gray-100">Informasi Akun</h2>
+                <p class="text-gray-400 text-sm">Perbarui informasi dasar dan peran pengguna.</p>
             </div>
 
-            <div class="form-group" id="emailField" style="margin-bottom:20px; @if(old('role') == 'siswa' || (!old('role') && $user->role == 'siswa')) display: none; @endif">
-                <label for="email" style="display:block;margin-bottom:8px;font-weight:500;">Email</label>
-                <input type="email" id="email" name="email" class="form-control" value="{{ old('email', $user->email) }}" required style="width:100%;padding:12px;border:1px solid #ddd;border-radius:6px;">
-                @error('email')
-                    <div class="alert alert-error" style="margin-top:8px;padding:8px 12px;background:#fee;border-left:4px solid #dc2626;color:#dc2626;font-size:14px;">{{ $message }}</div>
-                @enderror
-            </div>
+            <form action="{{ route('admin.users.update', $user) }}" method="POST" class="space-y-5">
+                @csrf
+                @method('PUT')
 
-            <div class="form-group" style="margin-bottom:20px;">
-                <label for="role" style="display:block;margin-bottom:8px;font-weight:500;">Role</label>
-                <select id="role" name="role" class="form-control" required style="width:100%;padding:12px;border:1px solid #ddd;border-radius:6px;" onchange="
-                    const role = this.value;
-                    const emailField = document.getElementById('emailField');
-                    const nisField = document.getElementById('nisField');
-                    const passwordField = document.getElementById('passwordField');
-                    
-                    if (role === 'admin') {
-                        emailField.style.display = 'block';
-                        nisField.style.display = 'none';
-                        passwordField.style.display = 'block';
-                    } else if (role === 'siswa') {
-                        emailField.style.display = 'none';
-                        nisField.style.display = 'block';
-                        passwordField.style.display = 'none';
-                    }
-                ">
-                    <option value="admin" {{ old('role', $user->role) == 'admin' ? 'selected' : '' }}>Admin</option>
-                    <option value="siswa" {{ old('role', $user->role) == 'siswa' ? 'selected' : '' }}>Siswa</option>
-                </select>
-                @error('role')
-                    <div class="alert alert-error" style="margin-top:8px;padding:8px 12px;background:#fee;border-left:4px solid #dc2626;color:#dc2626;font-size:14px;">{{ $message }}</div>
-                @enderror
-            </div>
+                <div class="form-group">
+                    <label for="name" class="block text-sm font-medium text-gray-300 mb-2">Nama Lengkap</label>
+                    <input type="text" id="name" name="name" class="input-dark w-full py-3 px-4" value="{{ old('name', $user->name) }}" required placeholder="Masukkan nama lengkap">
+                    @error('name')
+                        <div class="mt-2 text-sm text-red-500 font-medium flex items-center gap-1">
+                            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path></svg>
+                            {{ $message }}
+                        </div>
+                    @enderror
+                </div>
 
-            <div class="form-group" id="nisField" style="margin-bottom:20px; @if(old('role') == 'admin' || (!old('role') && $user->role == 'admin')) display: none; @endif">
-                <label for="nis" style="display:block;margin-bottom:8px;font-weight:500;">NIS</label>
-                <input type="text" id="nis" name="nis" class="form-control" value="{{ old('nis', $user->nis) }}" placeholder="Nomor Induk Siswa (Opsional)" style="width:100%;padding:12px;border:1px solid #ddd;border-radius:6px;">
-                @error('nis')
-                    <div class="alert alert-error" style="margin-top:8px;padding:8px 12px;background:#fee;border-left:4px solid #dc2626;color:#dc2626;font-size:14px;">{{ $message }}</div>
-                @enderror
-            </div>
+                <div class="form-group" id="emailField" style="@if(old('role', $user->role) == 'siswa') display: none; @endif">
+                    <label for="email" class="block text-sm font-medium text-gray-300 mb-2">Email</label>
+                    <input type="email" id="email" name="email" class="input-dark w-full py-3 px-4" value="{{ old('email', $user->email) }}" placeholder="email@example.com">
+                    @error('email')
+                        <div class="mt-2 text-sm text-red-500 font-medium flex items-center gap-1">
+                            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path></svg>
+                            {{ $message }}
+                        </div>
+                    @enderror
+                </div>
 
-            <div class="form-group" id="passwordField" style="margin-bottom:20px; @if(old('role') == 'siswa' || (!old('role') && $user->role == 'siswa')) display: none; @endif">
-                <label for="password" style="display:block;margin-bottom:8px;font-weight:500;">Password <small style="font-weight:normal;color:#666;">(Kosongkan jika tidak ingin mengganti)</small></label>
-                <input type="password" id="password" name="password" class="form-control" style="width:100%;padding:12px;border:1px solid #ddd;border-radius:6px;" placeholder="Kosongkan untuk tidak mengganti password">
-                @error('password')
-                    <div class="alert alert-error" style="margin-top:8px;padding:8px 12px;background:#fee;border-left:4px solid #dc2626;color:#dc2626;font-size:14px;">{{ $message }}</div>
-                @enderror
-            </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                    <div class="form-group">
+                        <label for="role" class="block text-sm font-medium text-gray-300 mb-2">Role</label>
+                        <select id="role" name="role" class="input-dark w-full py-3 px-4 appearance-none" required onchange="
+                            const role = this.value;
+                            const emailField = document.getElementById('emailField');
+                            const nisField = document.getElementById('nisField');
+                            const passwordField = document.getElementById('passwordField');
+                            
+                            if (role === 'admin') {
+                                emailField.style.display = 'block';
+                                nisField.style.display = 'none';
+                                passwordField.style.display = 'block';
+                            } else if (role === 'siswa') {
+                                emailField.style.display = 'none';
+                                nisField.style.display = 'block';
+                                passwordField.style.display = 'none';
+                            }
+                        ">
+                            <option value="admin" {{ old('role', $user->role) == 'admin' ? 'selected' : '' }}>Admin</option>
+                            <option value="siswa" {{ old('role', $user->role) == 'siswa' ? 'selected' : '' }}>Siswa</option>
+                        </select>
+                    </div>
 
-            <div class="form-actions" style="display:flex;gap:12px;margin-top:32px;justify-content:flex-start;">
-                <button type="submit" class="btn btn-primary" style="padding:12px 24px;background:#3b82f6;color:white;border:none;border-radius:6px;cursor:pointer;font-weight:500;">
-                    <span>💾</span>
-                    <span>Perbarui User</span>
-                </button>
-                <a href="{{ route('admin.users.index') }}" class="btn btn-secondary" style="padding:12px 24px;background:#6b7280;color:white;text-decoration:none;border:none;border-radius:6px;font-weight:500;">
-                    <span>✖</span>
-                    <span>Batal</span>
-                </a>
-            </div>
-        </form>
+                    <div class="form-group">
+                        <label for="status" class="block text-sm font-medium text-gray-300 mb-2">Status Akun</label>
+                        <select id="status" name="status" class="input-dark w-full py-3 px-4 appearance-none" required>
+                            <option value="active" {{ old('status', $user->status) == 'active' ? 'selected' : '' }}>✓ Aktif</option>
+                            <option value="inactive" {{ old('status', $user->status) == 'inactive' ? 'selected' : '' }}>✕ Tidak Aktif</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group" id="nisField" style="@if(old('role', $user->role) == 'admin') display: none; @endif">
+                    <label for="nis" class="block text-sm font-medium text-gray-300 mb-2">NIS</label>
+                    <input type="text" id="nis" name="nis" class="input-dark w-full py-3 px-4" value="{{ old('nis', $user->nis) }}" placeholder="Nomor Induk Siswa">
+                    @error('nis')
+                        <div class="mt-2 text-sm text-red-500 font-medium flex items-center gap-1">
+                            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path></svg>
+                            {{ $message }}
+                        </div>
+                    @enderror
+                </div>
+
+                <div class="form-group" id="passwordField" style="@if(old('role', $user->role) == 'siswa') display: none; @endif">
+                    <label for="password" class="block text-sm font-medium text-gray-300 mb-2">Password <span class="text-xs font-normal text-gray-500">(Kosongkan jika tidak ingin mengganti)</span></label>
+                    <input type="password" id="password" name="password" class="input-dark w-full py-3 px-4" placeholder="••••••••">
+                    @error('password')
+                        <div class="mt-2 text-sm text-red-500 font-medium flex items-center gap-1">
+                            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path></svg>
+                            {{ $message }}
+                        </div>
+                    @enderror
+                </div>
+
+                <div class="flex items-center gap-3 pt-4 border-t border-gray-800">
+                    <button type="submit" class="btn btn-primary px-6 py-3 flex items-center gap-2">
+                        <span>💾</span>
+                        <span>Simpan Perubahan</span>
+                    </button>
+                    <a href="{{ route('admin.users.index') }}" class="btn btn-secondary px-6 py-3">
+                        Batal
+                    </a>
+                </div>
+            </form>
+        </div>
     </div>
 @endsection

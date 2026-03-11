@@ -139,7 +139,7 @@
                     </div>
                     <div class="flex items-center justify-between bg-gray-800 p-3 rounded-md">
                         <span class="text-sm text-gray-400">Total Aspirasi</span>
-                        <strong class="text-sm text-gray-100">{{ \App\Models\Kategori::sum('aspirasi_count') ?? 0 }}</strong>
+                        {{-- <strong class="text-sm text-gray-100">{{ \App\Models\Kategori::sum('aspirasi_count') ?? 0 }}</strong> --}}
                     </div>
                 </div>
             </div>

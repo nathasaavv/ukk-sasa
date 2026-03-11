@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->enum('status', ['Menunggu', 'Diproses', 'Selesai']);
             $table->foreignId('kategori_id')->constrained('kategori')->onDelete('cascade');
-             $table->text('feedback');
+            $table->text('feedback');
             $table->timestamps();
         });
     }

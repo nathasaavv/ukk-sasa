@@ -3,117 +3,160 @@
 @section('title', 'Edit Aspirasi')
 
 @section('header')
-    <div style="display:flex;align-items:center;gap:15px;">
-        <a href="{{ route('aspirasi.index') }}" class="btn btn-secondary">
+    <div class="flex items-center gap-4">
+        <a href="{{ route('aspirasi.index') }}" class="btn-secondary inline-flex items-center gap-2">
             <span>←</span>
             <span>Kembali</span>
         </a>
-        <h1>Edit Aspirasi</h1>
+        <h1 class="text-xl font-semibold">Edit Aspirasi</h1>
     </div>
 @endsection
 
 @section('content')
-<div style="display:grid;grid-template-columns:1fr 320px;gap:30px;">
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
 
-    <!-- Form -->
-    <div class="form-container">
-        <div style="margin-bottom:20px;">
-            <h2 style="font-size:20px;color:var(--text);margin-bottom:6px;">Form Edit Aspirasi</h2>
-            <p class="text-muted" style="font-size:14px;">
+    <!-- FORM -->
+    <div class="lg:col-span-2">
+
+        <div class="mb-6">
+            <h2 class="text-lg font-semibold text-gray-100">Form Edit Aspirasi</h2>
+            <p class="text-gray-400">
                 Perbarui aspirasi Anda sebelum ditinjau oleh pihak sekolah.
             </p>
         </div>
 
+        {{-- Success --}}
         @if(session('success'))
-        <div class="alert alert-success">
-            <span>✅</span>
-            <span>{{ session('success') }}</span>
-        </div>
+            <div class="mb-4 p-3 rounded-md bg-green-600 text-white">
+                ✅ {{ session('success') }}
+            </div>
         @endif
 
+        {{-- Error --}}
         @if($errors->any())
-        <div class="alert alert-warning">
-            <span>⚠️</span>
-            <div>
+            <div class="mb-4 p-3 rounded-md bg-yellow-500 text-black">
                 <strong>Perhatian:</strong>
-                <ul style="margin:5px 0 0 0;padding-left:20px;">
+                <ul class="mt-2 list-disc list-inside">
                     @foreach($errors->all() as $error)
                         <li>{{ $error }}</li>
                     @endforeach
                 </ul>
             </div>
-        </div>
         @endif
 
-        <form action="{{ route('aspirasi.update', $aspirasi->id) }}" method="POST"
-              style="display:flex;flex-direction:column;gap:20px;">
+        <form action="{{ route('aspirasi.update', $aspirasi->id) }}"
+              method="POST"
+              class="space-y-4">
+
             @csrf
             @method('PUT')
 
-            <!-- Kategori -->
+            {{-- KATEGORI --}}
             <div class="form-group">
-                <label for="kategori_id">Kategori <span style="color:#ef4444;">*</span></label>
-                <select id="kategori_id" name="kategori_id" class="form-control" required>
+                <label for="kategori_id" class="block text-sm text-gray-200">
+                    Kategori <span class="text-red-500">*</span>
+                </label>
+
+                <select id="kategori_id"
+                        name="kategori_id"
+                        class="input-dark mt-2 w-full"
+                        required>
+
                     <option value="">-- Pilih Kategori --</option>
+
                     @foreach($kategori as $item)
-                        <option value="{{ $item->id }}" {{ old('kategori_id', $aspirasi->kategori_id) == $item->id ? 'selected' : '' }}>
+                        <option value="{{ $item->id }}"
+                            {{ old('kategori_id', $aspirasi->kategori_id) == $item->id ? 'selected' : '' }}>
                             {{ $item->nama }}
                         </option>
                     @endforeach
                 </select>
             </div>
 
-            <!-- Aspirasi -->
+            {{-- FEEDBACK --}}
             <div class="form-group">
-                <label for="feedback">Aspirasi / Masukan <span style="color:#ef4444;">*</span></label>
+                <label for="feedback" class="block text-sm text-gray-200">
+                    Aspirasi / Masukan <span class="text-red-500">*</span>
+                </label>
+
                 <textarea id="feedback"
                           name="feedback"
-                          class="form-control"
+                          class="input-dark mt-2 w-full min-h-[140px] resize-none p-3"
                           rows="6"
                           maxlength="2000"
                           required>{{ old('feedback', $aspirasi->feedback) }}</textarea>
 
-                <div style="display:flex;justify-content:space-between;margin-top:6px;">
-                    <small class="text-muted">Gunakan bahasa yang sopan dan jelas.</small>
-                    <small id="counter" class="text-muted">0 / 2000</small>
+                <div class="flex justify-between items-center mt-2 text-sm">
+                    <small class="text-gray-400">
+                        Gunakan bahasa yang sopan dan jelas.
+                    </small>
+                    <small id="counter" class="text-gray-400">
+                        0 / 2000
+                    </small>
                 </div>
             </div>
 
-            <!-- Status (hidden) -->
+            {{-- STATUS HIDDEN --}}
             <input type="hidden" name="status" value="{{ $aspirasi->status }}">
 
-            <div style="display:flex;gap:12px;">
-                <button type="button" class="btn btn-secondary" onclick="window.history.back()">Batal</button>
-                <button type="submit" class="btn btn-primary" id="submitBtn">
+            {{-- BUTTON --}}
+            <div class="flex items-center gap-3">
+                <button type="button"
+                        class="btn-secondary"
+                        onclick="window.history.back()">
+                    Batal
+                </button>
+
+                <button type="submit"
+                        class="btn-primary"
+                        id="submitBtn">
                     <span>💾</span>
                     <span>Simpan Perubahan</span>
                 </button>
             </div>
+
         </form>
     </div>
 
-    <!-- Sidebar -->
-    <div>
-        <div class="card" style="background:#f8fafc;border:1px solid #e6eef6;">
-            <h3 style="font-size:15px;margin-bottom:10px;">Catatan</h3>
-            <p class="text-muted" style="font-size:13px;">
-                Aspirasi hanya dapat diedit selama status masih <strong>Menunggu</strong>.
+    <!-- SIDEBAR -->
+    <aside class="space-y-6">
+
+        <div class="card-dark p-4">
+            <h3 class="text-sm font-semibold text-gray-100 mb-2">
+                Catatan
+            </h3>
+
+            <p class="text-sm text-gray-400">
+                Aspirasi hanya dapat diedit selama status masih
+                <strong>Menunggu</strong>.
             </p>
         </div>
-    </div>
+
+    </aside>
 
 </div>
 @endsection
 
+
 @push('scripts')
 <script>
 document.addEventListener('DOMContentLoaded', function () {
+
     const textarea = document.getElementById('feedback');
     const counter = document.getElementById('counter');
     const submitBtn = document.getElementById('submitBtn');
 
     function updateCounter() {
-        counter.textContent = textarea.value.length + ' / ' + textarea.maxLength;
+        const len = textarea.value.length;
+        counter.textContent = len + ' / ' + textarea.maxLength;
+
+        if (len > textarea.maxLength) {
+            counter.classList.remove('text-gray-400');
+            counter.classList.add('text-red-500');
+        } else {
+            counter.classList.remove('text-red-500');
+            counter.classList.add('text-gray-400');
+        }
     }
 
     textarea.addEventListener('input', function () {
@@ -125,9 +168,11 @@ document.addEventListener('DOMContentLoaded', function () {
     updateCounter();
 
     document.querySelector('form').addEventListener('submit', function () {
-        submitBtn.innerHTML = '<span>⏳</span> Menyimpan...';
+        submitBtn.innerHTML = '<span>⏳</span> <span>Menyimpan...</span>';
         submitBtn.disabled = true;
+        submitBtn.classList.add('opacity-75');
     });
+
 });
 </script>
 @endpush

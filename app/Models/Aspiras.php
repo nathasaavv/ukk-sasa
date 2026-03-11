@@ -15,7 +15,10 @@ class Aspiras extends Model
         'kategori_id',
         'feedback',
         'user_id',
+        'feedback_admin',
+        'is_archive',
     ];
+    
     protected $table = 'asprirasi';
     public function kategori()
     {

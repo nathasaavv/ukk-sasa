@@ -5,37 +5,39 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login - Aplikasi Aspirasi Siswa</title>
     <style>
+        /* reset + base */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
         }
 
         body {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background-color: #0b1220;
+            color: #f3f4f6;
             min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
             padding: 20px;
-            position: relative;
         }
 
-        /* dim gradient slightly so the form card stands out */
-        body::before{ content: ""; position: fixed; inset: 0; background: rgba(11,17,34,0.06); pointer-events: none; }
-
         .login-container {
-            /* make container clearly readable on top of the gradient */
-            background: rgba(255,255,255,0.96);
-            color: #0b1220;
-            border-radius: 15px;
+            background-color: #1f2937; /* card-dark */
+            color: #f3f4f6;
+            border-radius: 0.75rem;
             box-shadow: 0 30px 80px rgba(2,6,23,0.18);
-            overflow: hidden;
             max-width: 450px;
             width: 100%;
+            overflow: hidden;
             animation: slideIn 0.5s ease-out;
-            border: 1px solid rgba(2,6,23,0.06);
+            border: 1px solid #374151;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(-30px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         @keyframes slideIn {
@@ -50,8 +52,8 @@
         }
 
         .login-header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
+            background-color: #111827;
+            color: #f3f4f6;
             padding: 40px 30px;
             text-align: center;
         }
@@ -84,7 +86,7 @@
         .form-group label {
             display: block;
             font-weight: 600;
-            color: #333;
+            color: #f3f4f6;
             margin-bottom: 8px;
             font-size: 14px;
         }
@@ -92,20 +94,22 @@
         .form-group input {
             width: 100%;
             padding: 12px 15px;
-            border: 2px solid #e0e0e0;
+            border: 2px solid #374151;
             border-radius: 8px;
+            background-color: #1f2937;
+            color: #f3f4f6;
             font-size: 14px;
             transition: all 0.3s ease;
         }
 
         .form-group input:focus {
             outline: none;
-            border-color: #667eea;
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+            border-color: #10b981;
+            box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
         }
 
         .form-group input::placeholder {
-            color: #999;
+            color: #9ca3af;
         }
 
         .remember-forgot {
@@ -117,13 +121,13 @@
         }
 
         .remember-forgot a {
-            color: #667eea;
+            color: #10b981;
             text-decoration: none;
             transition: all 0.3s ease;
         }
 
         .remember-forgot a:hover {
-            color: #764ba2;
+            color: #059669;
             text-decoration: underline;
         }
 
@@ -141,14 +145,14 @@
         .checkbox-group label {
             margin: 0;
             font-weight: 500;
-            color: #666;
+            color: #9ca3af;
             cursor: pointer;
         }
 
         .btn-login {
             width: 100%;
             padding: 12px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background-color: #10b981;
             color: white;
             border: none;
             border-radius: 8px;
@@ -156,12 +160,12 @@
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4);
         }
 
         .btn-login:hover {
             transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+            box-shadow: 0 6px 20px rgba(16, 185, 129, 0.6);
         }
 
         .btn-login:active {
@@ -171,26 +175,26 @@
         .login-footer {
             text-align: center;
             padding: 20px 30px;
-            border-top: 1px solid #f0f0f0;
-            background: #fafafa;
+            border-top: 1px solid #374151;
+            background: #111827;
             font-size: 14px;
-            color: #666;
+            color: #9ca3af;
         }
 
         .login-footer a {
-            color: #667eea;
+            color: #10b981;
             text-decoration: none;
             font-weight: 600;
             transition: all 0.3s ease;
         }
 
         .login-footer a:hover {
-            color: #764ba2;
+            color: #059669;
         }
 
         .error-message {
-            background: #fee;
-            color: #c33;
+            background: #3f0000;
+            color: #fee;
             padding: 12px;
             border-radius: 8px;
             margin-bottom: 20px;
@@ -199,13 +203,13 @@
         }
 
         .success-message {
-            background: #efe;
-            color: #3c3;
+            background: #0f2f0f;
+            color: #6ee7b7;
             padding: 12px;
             border-radius: 8px;
             margin-bottom: 20px;
             font-size: 13px;
-            border-left: 4px solid #3c3;
+            border-left: 4px solid #10b981;
         }
 
         .input-icon-group {
@@ -217,7 +221,7 @@
             right: 15px;
             top: 50%;
             transform: translateY(-50%);
-            color: #999;
+            color: #9ca3af;
             pointer-events: none;
         }
 
@@ -331,7 +335,7 @@
                     />
                     <span class="input-icon">🔒</span>
                 </div>
-                <small id="passwordHint" style="display:block;margin-top:6px;color:#6b7280;font-size:13px;">(Hanya diperlukan untuk Admin)</small>
+                <small id="passwordHint" style="display:block;margin-top:6px;color:#9ca3af;font-size:13px;">(Hanya diperlukan untuk Admin)</small>
             </div>
 
             <!-- Remember & Forgot Password -->

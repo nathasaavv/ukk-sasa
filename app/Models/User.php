@@ -20,8 +20,13 @@ class User extends Authenticatable
         'name',
         'email',
         'role',
+        'status',
         'nis',
         'kelas',
+        'password',
+    ];
+
+    protected $hashes = [
         'password',
     ];
 
@@ -45,4 +50,9 @@ class User extends Authenticatable
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
     ];
+
+    public function aspirasis()
+    {
+        return $this->hasMany(Aspiras::class, 'user_id');
+    }
 }

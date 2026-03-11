@@ -20,8 +20,8 @@ class KategoriController extends Controller
             }
         }
 
-        if ($request->has('search')) {
-            $search = $request->get('search');
+        if ($request->has('q')) {
+            $search = $request->get('q');
             $query->where(function ($q) use ($search) {
                 $q->where('nama', 'like', '%' . $search . '%')
                     ->orWhere('ket_kategori', 'like', '%' . $search . '%');

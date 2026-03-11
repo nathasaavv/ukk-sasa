@@ -10,7 +10,6 @@ class LoginController extends Controller
 {
     public function index(Request $request)
     {
-        // If a role query param is provided, show the specific login form.
         // Otherwise show the selection page first.
         if ($request->has('role') && in_array($request->query('role'), ['admin', 'siswa'])) {
             $role = $request->query('role');
@@ -26,45 +25,75 @@ class LoginController extends Controller
             'role' => 'required|in:admin,siswa',
         ]);
 
-        // ADMIN: email + password (usual flow)
         if ($request->role === 'admin') {
+
             $request->validate([
                 'email' => 'required|email',
                 'password' => 'required',
             ]);
 
-            $credentials = [
+            if (Auth::attempt([
                 'email' => $request->email,
-                'password' => $request->password,
-                'role' => 'admin',
-            ];
+                'password' => $request->password
+            ])) {
 
-            if (Auth::attempt($credentials)) {
                 $request->session()->regenerate();
-                return redirect('/dashboard')->with('success', 'Selamat datang, ' . Auth::user()->name . '!');
+
+                $user = Auth::user();
+
+                if ($user->role !== 'admin') {
+                    Auth::logout();
+
+                    return back()->withErrors([
+                        'email' => 'Akun ini bukan admin'
+                    ]);
+                }
+
+                if ($user->status !== 'active') {
+                    Auth::logout();
+
+                    return back()->withErrors([
+                        'email' => 'Akun Anda telah dinonaktifkan. Hubungi administrator.'
+                    ]);
+                }
+
+                return redirect()->route('dashboard.index')
+                    ->with('success', 'Selamat datang, ' . $user->name . '!');
             }
 
-            return back()->withErrors(['email' => 'Email atau password salah'])->withInput();
+            return back()->withErrors([
+                'email' => 'Email atau password salah'
+            ])->withInput();
         }
 
-        // SISWA: hanya NIS (tanpa password)
-        $request->validate([
-            'nis' => 'required',
-        ]);
+        if ($request->role === 'siswa') {
 
-        $user = User::where('nis', $request->nis)->where('role', 'siswa')->first();
+            $request->validate([
+                'nis' => 'required',
+            ]);
 
-        if (! $user) {
-            return back()->withErrors(['nis' => 'NIS tidak ditemukan'])->withInput();
+            $user = User::where('nis', $request->nis)
+                        ->where('role', 'siswa')
+                        ->first();
+
+            if (!$user) {
+                return back()->withErrors([
+                    'nis' => 'NIS tidak ditemukan'
+                ])->withInput();
+            }
+
+            if ($user->status !== 'active') {
+                return back()->withErrors([
+                    'nis' => 'Akun Anda telah dinonaktifkan. Hubungi administrator.'
+                ])->withInput();
+            }
+
+            Auth::login($user);
+            $request->session()->regenerate();
+
+            return redirect()->route('dashboard.siswa')->with('success', 'Selamat datang, ' . $user->name . '!');
         }
-
-        // login the siswa user without password
-        Auth::login($user);
-        $request->session()->regenerate();
-
-        return redirect('/dashboard')->with('success', 'Selamat datang, ' . $user->name . '!');
     }
-
 
     public function logout(Request $request)
     {

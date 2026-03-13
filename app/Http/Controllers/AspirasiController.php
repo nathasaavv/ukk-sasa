@@ -6,6 +6,7 @@ use App\Models\Aspiras;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Models\Kategori;
+use Carbon\Carbon;
 
 class AspirasiController extends Controller
 {
@@ -16,26 +17,40 @@ class AspirasiController extends Controller
     {
         $query = Aspiras::with(['kategori', 'user']);
         
-        // Filter berdasarkan role
         if (auth()->user()->role === 'siswa') {
             $query->where('user_id', auth()->id());
         }
         
-        // Filter berdasarkan kategori
         if ($request->filled('kategori')) {
             $query->where('kategori_id', $request->kategori);
         }
         
-        // Filter berdasarkan siswa (hanya untuk admin)
         if ($request->filled('siswa') && auth()->user()->role === 'admin') {
             $query->where('user_id', $request->siswa);
         }
         
         // Filter berdasarkan tanggal
-        if ($request->filled('tanggal')) {
-            $query->whereDate('created_at', $request->tanggal);
-        }
-        
+        if ($request->filled('tanggal_mulai') && $request->filled('tanggal_selesai')) {
+
+    $start = Carbon::parse($request->tanggal_mulai)->startOfDay();
+    $end   = Carbon::parse($request->tanggal_selesai)->endOfDay();
+
+    $query->whereBetween('created_at', [$start, $end]);
+
+} elseif ($request->filled('tanggal_mulai')) {
+
+    $start = Carbon::parse($request->tanggal_mulai)->startOfDay();
+    $end   = Carbon::parse($request->tanggal_mulai)->endOfDay();
+
+    $query->whereBetween('created_at', [$start, $end]);
+
+} elseif ($request->filled('tanggal_selesai')) {
+
+    // SEMUA DATA SEBELUM TANGGAL AKHIR
+    $end = Carbon::parse($request->tanggal_selesai)->endOfDay();
+
+    $query->where('created_at', '<=', $end);
+}   
         // Filter berdasarkan bulan
         if ($request->filled('bulan')) {
             $parts = explode('-', $request->bulan);
@@ -48,6 +63,10 @@ class AspirasiController extends Controller
         // Filter berdasarkan status
         if ($request->filled('status')) {
             $query->where('status', $request->status);
+        } else {
+            if (auth()->user()->role === 'admin') {
+                $query->where('status', '!=', 'Selesai');
+            }
         }
         
         // Filter Pencarian Global (q)
@@ -76,6 +95,62 @@ class AspirasiController extends Controller
                     ->get();
         
         return view('aspirasi.index', compact('aspirasis', 'kategoris', 'siswa', 'months'));
+    }
+
+    public function selesai(Request $request)
+    {
+        $query = Aspiras::with(['kategori', 'user'])->where('status', 'Selesai');
+        
+        // Filter berdasarkan kategori
+        if ($request->filled('kategori')) {
+            $query->where('kategori_id', $request->kategori);
+        }
+        
+        // Filter berdasarkan siswa (hanya untuk admin)
+        if ($request->filled('siswa') && auth()->user()->role === 'admin') {
+            $query->where('user_id', $request->siswa);
+        }
+        
+        // Filter berdasarkan tanggal
+        if ($request->filled('tanggal')) {
+            $query->whereDate('created_at', $request->tanggal);
+        }
+        
+        // Filter berdasarkan bulan
+        if ($request->filled('bulan')) {
+            $parts = explode('-', $request->bulan);
+            if (count($parts) == 2) {
+                $query->whereYear('created_at', $parts[0])
+                      ->whereMonth('created_at', $parts[1]);
+            }
+        }
+        
+        // Filter Pencarian Global (q)
+        if ($request->filled('q')) {
+            $search = $request->q;
+            $query->where(function($q) use ($search) {
+                $q->where('feedback', 'LIKE', "%{$search}%")
+                  ->orWhereHas('user', function($userQuery) use ($search) {
+                      $userQuery->where('name', 'LIKE', "%{$search}%")
+                                ->orWhere('nis', 'LIKE', "%{$search}%");
+                  })
+                  ->orWhereHas('kategori', function($kategoriQuery) use ($search) {
+                      $kategoriQuery->where('nama', 'LIKE', "%{$search}%");
+                  });
+            });
+        }
+        
+        $aspirasis = $query->where('is_archive', false)->get();
+        
+        // Data untuk filter dropdown
+        $kategoris = Kategori::all();
+        $siswa = auth()->user()->role === 'admin' ? User::where('role', 'siswa')->get() : collect();
+        $months = Aspiras::selectRaw('YEAR(created_at) as year, MONTH(created_at) as month')
+                    ->distinct()
+                    ->orderByRaw('YEAR(created_at) DESC, MONTH(created_at) DESC')
+                    ->get();
+        
+        return view('aspirasi.selesai', compact('aspirasis', 'kategoris', 'siswa', 'months'));
     }
 
     public function create()
@@ -136,7 +211,7 @@ class AspirasiController extends Controller
     {
         $aspirasi = Aspiras::findOrFail($id);
         $validate = $request->validate([
-            'status' => 'required|in:Menunggu,Diproses,Selesai',
+            'status' => 'required|in:Menunggu,Diproses,Selesai,Ditolak',
             'feedback_admin' => 'nullable|string',
         ]);
         $aspirasi->update($validate);

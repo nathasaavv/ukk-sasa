@@ -4,13 +4,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@yield('title', 'Aspirasi Siswa')</title>
+    <title>Tambah Kategori</title>
     <!-- Favicon -->
-    <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}">
-    <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('images/favicon.png') }}">
-    <link rel="apple-touch-icon" href="{{ asset('images/favicon.png') }}">
+    <link rel="icon" type="image/x-icon" href="http://127.0.0.1:8001/favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="http://127.0.0.1:8001/images/favicon.png">
+    <link rel="apple-touch-icon" href="http://127.0.0.1:8001/images/favicon.png">
     
-    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <link href="http://127.0.0.1:8001/css/app.css" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="//unpkg.com/alpinejs" defer></script>
     <script>
@@ -45,7 +45,7 @@
             <div class="flex justify-center flex-col items-center mb-4 mt-2">
                 <img 
                     class="w-30 h-20 object-contain drop-shadow-md"
-                    src="{{ asset('images/favicon.png') }}" 
+                    src="http://127.0.0.1:8001/images/favicon.png" 
                     alt="logo">
             </div>  
 
@@ -54,28 +54,16 @@
                 <div>
                     <h3 class="text-xs uppercase text-gray-400 font-semibold mb-3">Main Menu</h3>
                     <div class="space-y-2">
-                        @if (auth()->user()->role === 'admin')
-                            <a href="{{ route('dashboard.index') }}"
-                                class="sidebar-item {{ request()->routeIs('dashboard') ? 'active' : '' }}">
+                                                    <a href="http://127.0.0.1:8001/dashboard"
+                                class="sidebar-item ">
                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                         d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
                                 </svg>
                                 <span>Dashboard</span>
                             </a>
-                        @endif
-                        @if (auth()->user()->role === 'siswa')
-                            <a href="{{ route('dashboard.siswa') }}"
-                                class="sidebar-item {{ request()->routeIs('dashboard') ? 'active' : '' }}">
-                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
-                                </svg>
-                                <span>Dashboard Siswa</span>
-                            </a>
-                        @endif
-                        <a href="{{ route('aspirasi.index') }}"
-                            class="sidebar-item {{ (request()->routeIs('aspirasi.*') && !request()->routeIs('aspirasi.selesai')) ? 'active' : '' }}">
+                                                                        <a href="http://127.0.0.1:8001/aspirasi"
+                            class="sidebar-item ">
 
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -85,9 +73,8 @@
                             <span>Aspirasi Siswa</span>
                         </a>
 
-                        @if (auth()->user()->role === 'admin')
-                            <a href="{{ route('aspirasi.selesai') }}"
-                                class="sidebar-item {{ request()->routeIs('aspirasi.selesai') ? 'active' : '' }}">
+                                                    <a href="http://127.0.0.1:8001/aspirasi/selesai"
+                                class="sidebar-item ">
                                 
                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -96,11 +83,9 @@
                                 
                                 <span>Aspirasi Selesai</span>
                             </a>
-                        @endif
-
-                        @if (auth()->user()->role === 'admin')
-                            <a href="{{ route('kategori.index') }}"
-                                class="sidebar-item {{ request()->routeIs('kategori.*') ? 'active' : '' }}">
+                        
+                                                    <a href="http://127.0.0.1:8001/kategori"
+                                class="sidebar-item active">
 
                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -109,20 +94,16 @@
 
                                 <span>Kategori</span>
                             </a>
-                        @endif
-
-                        @if (auth()->user()->role === 'admin')
-                            <a href="{{ route('admin.users.index') }}"
-                                class="sidebar-item {{ request()->routeIs('admin.users.*') ? 'active' : '' }}">
+                        
+                                                    <a href="http://127.0.0.1:8001/admin/users"
+                                class="sidebar-item ">
                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                         d="M12 12a5 5 0 100-10 5 5 0 000 10zm0 2c-4.418 0-8 2.239-8 5v1h16v-1c0-2.761-3.582-5-8-5z" />
                                 </svg>
                                 <span>Users</span>
                             </a>
-                        @endif
-                        @if (auth()->user()->role === 'admin')
-                            <a href="{{ route('archive.index') }}" class="sidebar-item {{ request()->routeIs('archive.*') ? 'active' : '' }}">
+                                                                            <a href="http://127.0.0.1:8001/archive" class="sidebar-item ">
 
                                 <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none"
                                     viewBox="0 0 24 24" stroke="currentColor">
@@ -133,18 +114,8 @@
 
                                 <span>Arsip Aspirasi</span>
                             </a>
-                        @endif
-
-                        {{-- <a href="{{ route('aktivitas.index') }}"
-                        class="sidebar-item {{ request()->routeIs('aktivitas.*') ? 'active' : '' }}">
                         
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M12 8v4l3 3m9-3a9 9 0 11-3-6.7M21 3v6h-6" />
-                        </svg>
-
-                        <span>Aktivitas</span>
-                    </a> --}}
+                        
                     </div>
                 </div>
 
@@ -167,7 +138,13 @@
                         </svg>
                     </button>
                     <div class="min-w-0">
-                        @yield('header')
+                            <div class="flex items-center gap-4">
+        <a href="http://127.0.0.1:8001/kategori" class="btn-secondary inline-flex items-center gap-2">
+            <span>←</span>
+            <span>Kembali</span>
+        </a>
+        <h1 class="text-xl font-semibold">Tambah Kategori</h1>
+    </div>
                     </div>
                 </div>
 
@@ -177,7 +154,7 @@
                         <svg class="w-4 h-4 sm:w-5 sm:h-5 text-gray-400 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                         </svg>
-                        <input type="text" name="q" placeholder="Search..." value="{{ request('q') }}"
+                        <input type="text" name="q" placeholder="Search..." value=""
                             class="bg-transparent text-sm text-gray-100 placeholder-gray-400 outline-none w-24 md:w-48 transition-all focus:w-32 md:focus:w-64">
                     </form>
 
@@ -187,15 +164,11 @@
                             class="flex items-center gap-2 sm:gap-3 bg-gray-800/50 rounded-lg p-1.5 sm:px-4 sm:py-2 hover:bg-gray-700/50 transition-colors border border-gray-700/50"
                             onclick="toggleProfileMenu()">
                             <div class="w-7 h-7 sm:w-8 sm:h-8 bg-green-primary rounded-full flex items-center justify-center shadow-lg shadow-green-500/20 overflow-hidden">
-                                @if(auth()->user()->foto)
-                                    <img src="{{ asset('storage/profiles/' . auth()->user()->foto) }}" alt="P" class="w-full h-full object-cover">
-                                @else
-                                    <span class="text-white font-bold text-xs sm:text-sm">{{ substr(ucfirst(auth()?->user()->name), 0, 1) }}</span>
-                                @endif
-                            </div>
+                                                                    <img src="http://127.0.0.1:8001/storage/profiles/1773195673_2.jpg" alt="P" class="w-full h-full object-cover">
+                                                            </div>
                             <div class="text-left hidden xs:block">
-                                <div class="text-[11px] sm:text-sm font-bold text-gray-100 leading-tight">{{ explode(' ', ucfirst(auth()?->user()->name))[0] }}</div>
-                                <div class="text-[9px] sm:text-xs text-gray-500 font-medium">{{ auth()?->user()->role === 'admin' ? 'Admin' : auth()->user()->nis }}</div>
+                                <div class="text-[11px] sm:text-sm font-bold text-gray-100 leading-tight">Sasax</div>
+                                <div class="text-[9px] sm:text-xs text-gray-500 font-medium">Admin</div>
                             </div>
                             <svg class="w-3.5 h-3.5 text-gray-500 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
@@ -205,11 +178,10 @@
                         <!-- Profile Dropdown -->
                         <div class="absolute right-0 mt-2 w-48 bg-gray-800 rounded-lg shadow-lg border border-gray-700 hidden"
                             id="profileMenu">
-                            <a href="{{ route('profile.edit') }}"
+                            <a href="http://127.0.0.1:8001/profile"
                                 class="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-700 hover:text-white rounded-t-lg">Profile</a>
-                            <form action="{{ route('logout') }}" method="POST" class="block">
-                                @csrf
-                                <button type="submit"
+                            <form action="http://127.0.0.1:8001/logout" method="POST" class="block">
+                                <input type="hidden" name="_token" value="HGonnZq7h1VvI317ppbBP3swklncjDxaSODe2rNQ">                                <button type="submit"
                                     class="w-full text-left px-4 py-2 text-sm text-gray-300 hover:bg-gray-700 hover:text-white rounded-b-lg">Logout</button>
                             </form>
                         </div>
@@ -220,7 +192,92 @@
 
         <!-- Page Content -->
         <main class="p-4 sm:p-8 space-y-4 sm:space-y-6">
-            @yield('content')
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <!-- Form Container -->
+        <div class="lg:col-span-2">
+            <div class="mb-6">
+                <h2 class="text-lg font-semibold text-gray-100">Form Tambah Kategori</h2>
+                <p class="text-gray-400">Isi data kategori baru di bawah ini</p>
+            </div>
+
+            
+            
+            
+            <form action="http://127.0.0.1:8001/kategori/store" method="POST" class="space-y-4">
+                <input type="hidden" name="_token" value="HGonnZq7h1VvI317ppbBP3swklncjDxaSODe2rNQ">
+                <div class="form-group">
+                    <label for="nama" class="block text-sm text-gray-200">Nama Kategori <span class="text-red-500">*</span></label>
+                    <input type="text" id="nama" name="nama" value="" placeholder="Masukkan nama kategori" required autofocus aria-required="true"
+                        class="mt-2 w-full input-dark "
+                    >
+                                            <small class="text-gray-400 text-sm mt-2 block">Contoh: Fasilitas Sekolah, Kegiatan Ekstrakurikuler, dll</small>
+                                    </div>
+
+                <div class="form-group">
+                    <label for="ket_kategori" class="block text-sm text-gray-200">Keterangan</label>
+                    <textarea id="ket_kategori" name="ket_kategori" class="input-dark mt-2 w-full p-3 resize-none min-h-[96px] " rows="4" placeholder="Tambahkan keterangan untuk kategori ini..."></textarea>
+                                            <small class="text-gray-400 text-sm mt-2 block">Opsional: Berikan deskripsi detail tentang kategori ini</small>
+                                    </div>
+
+                <div class="form-group">
+                    <label class="block text-sm text-gray-200">Status Kategori <span class="text-red-500">*</span></label>
+                    <div class="flex items-center gap-6 mt-2">
+                        <label class="inline-flex items-center gap-2 cursor-pointer">
+                            <input type="radio" name="status" value="1" checked class="form-radio" aria-checked="true" />
+                            <span class="text-sm text-gray-200">Aktif</span>
+                        </label>
+                        <label class="inline-flex items-center gap-2 cursor-pointer">
+                            <input type="radio" name="status" value="0"  class="form-radio" aria-checked="false" />
+                            <span class="text-sm text-gray-200">Tidak Aktif</span>
+                        </label>
+                    </div>
+                                        <small class="text-gray-400 text-sm mt-2 block">Pilih status untuk kategori ini. Default: Aktif</small>
+                </div>
+
+                <div class="flex items-center gap-3">
+                    <button type="button" class="btn-secondary" onclick="window.history.back()">Batal</button>
+                    <button type="submit" class="btn-primary" id="submitBtn"><span>💾</span> <span>Simpan Kategori</span></button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Info Sidebar -->
+        <aside class="space-y-6">
+            <div class="card-dark p-4">
+                <div class="flex items-start gap-3 mb-3">
+                    <div class="w-10 h-10 bg-blue-400 rounded-lg flex items-center justify-center text-white text-lg">💡</div>
+                    <div>
+                        <h3 class="text-sm font-semibold text-gray-100">Tips Membuat Kategori</h3>
+                        <p class="text-gray-400 text-sm mb-2">Beberapa tips singkat agar kategori mudah dipahami dan efektif.</p>
+                    </div>
+                </div>
+                <ul class="text-sm text-gray-300 space-y-2 list-disc list-inside">
+                    <li>Buat nama kategori yang jelas dan mudah dipahami</li>
+                    <li>Hindari nama yang terlalu panjang atau rumit</li>
+                    <li>Pertimbangkan kategori yang sering dibutuhkan siswa</li>
+                    <li>Contoh: Fasilitas, Akademik, Ekstrakurikuler, dll</li>
+                </ul>
+            </div>
+
+            <div class="card-dark p-4">
+                <h3 class="text-sm font-semibold text-gray-100 mb-3">📊 Statistik Kategori</h3>
+                <div class="space-y-3">
+                    <div class="flex items-center justify-between bg-gray-800 p-3 rounded-md">
+                        <span class="text-sm text-gray-400">Total Kategori</span>
+                        <strong class="text-sm text-gray-100"></strong>
+                    </div>
+                    <div class="flex items-center justify-between bg-gray-800 p-3 rounded-md">
+                        <span class="text-sm text-gray-400">Kategori Aktif</span>
+                        <strong class="text-sm text-gray-100"></strong>
+                    </div>
+                    <div class="flex items-center justify-between bg-gray-800 p-3 rounded-md">
+                        <span class="text-sm text-gray-400">Total Aspirasi</span>
+                        <strong class="text-sm text-gray-100"></strong>
+                    </div>
+                </div>
+            </div>
+        </aside>
+    </div>
         </main>
     </div>
 

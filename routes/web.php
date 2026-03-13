@@ -27,6 +27,12 @@ Route::get('/login', [LoginController::class, 'index'])->name('login');
 Route::post('/login', [LoginController::class, 'login'])->name('login.authenticate');
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
+// Password Reset Routes
+Route::get('/forgot-password', [App\Http\Controllers\Auth\ForgotPasswordController::class, 'showLinkRequestForm'])->name('password.request');
+Route::post('/forgot-password', [App\Http\Controllers\Auth\ForgotPasswordController::class, 'sendResetLinkEmail'])->name('password.email');
+Route::get('/reset-password/{token}', [App\Http\Controllers\Auth\ForgotPasswordController::class, 'showResetForm'])->name('password.reset');
+Route::post('/reset-password', [App\Http\Controllers\Auth\ForgotPasswordController::class, 'reset'])->name('password.update');
+
 // Protected Routes (Require Authentication)
 Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard.index')->middleware('role:admin');
@@ -34,6 +40,7 @@ Route::middleware(['auth'])->group(function () {
         return view('dashboardSiswa.index');
     })->name('dashboard.siswa')->middleware('role:siswa');
     Route::get('/aspirasi', [App\Http\Controllers\AspirasiController::class, 'index'])->name('aspirasi.index');
+    Route::get('/aspirasi/selesai', [App\Http\Controllers\AspirasiController::class, 'selesai'])->name('aspirasi.selesai')->middleware('role:admin');
     Route::get('/aspirasi/create', [App\Http\Controllers\AspirasiController::class, 'create'])->name('aspirasi.create');
     Route::post('/aspirasi/store', [App\Http\Controllers\AspirasiController::class, 'store'])->name('aspirasi.store');
     Route::get('/aspirasi/{id}/edit', [App\Http\Controllers\AspirasiController::class, 'edit'])->name('aspirasi.edit');
@@ -59,6 +66,10 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/siswa/import', [App\Http\Controllers\SiswaController::class, 'import'])->name('siswa.import');
     Route::get('/archive', [App\Http\Controllers\AspirasiController::class, 'archive'])->name('archive.index');
     Route::post('/archive/{id}/aspirasi', [App\Http\Controllers\AspirasiController::class, 'archiveAspirasi'])->name('archive.aspirasi');
+    Route::get('/profile', [App\Http\Controllers\ProfileController::class, 'edit'])->name('profile.edit');
+    Route::put('/profile', [App\Http\Controllers\ProfileController::class, 'update'])->name('profile.update');
+
     Route::delete('/unarchive/{id}/aspirasi', [App\Http\Controllers\AspirasiController::class, 'unarchiveAspirasi'])->name('unarchive.aspirasi');
+   
 });
 

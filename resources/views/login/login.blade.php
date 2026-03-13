@@ -4,6 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login - Aplikasi Aspirasi Siswa</title>
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('images/favicon.png') }}">
+    <link rel="apple-touch-icon" href="{{ asset('images/favicon.png') }}">
     <style>
         /* reset + base */
         * {
@@ -324,7 +328,7 @@
             </div>
 
             <!-- Password Field (only for admin) -->
-            <div class="form-group" id="passwordGroup" style="{{ $initialRole === 'siswa' ? 'display:none;' : '' }}">
+            <div class="form-group" id="passwordGroup">
                 <label for="password">Password</label>
                 <div class="input-icon-group">
                     <input
@@ -335,16 +339,19 @@
                     />
                     <span class="input-icon">🔒</span>
                 </div>
-                <small id="passwordHint" style="display:block;margin-top:6px;color:#9ca3af;font-size:13px;">(Hanya diperlukan untuk Admin)</small>
             </div>
 
             <!-- Remember & Forgot Password -->
-            <div class="remember-forgot">
+
+            <div class="remember-forgot" id="rememberForgotGroup">
                 <div class="checkbox-group">
                     <input type="checkbox" id="remember" name="remember" value="1">
                     <label for="remember">Ingat saya</label>
                 </div>
-                <a href="#forgot-password">Lupa password?</a>
+                
+                  <a href="{{ route('password.request') }}">Lupa password?</a>
+
+                
             </div>
 
             <!-- Login Button -->
@@ -354,7 +361,7 @@
 
         <!-- Footer -->
         <div class="login-footer">
-            Belum punya akun? <a href="#register">Hubungi Admin</a>
+            Anda Ingin <a href="{{ route('login') }}">Kembali</a>
         </div>
     </div>
 </body>

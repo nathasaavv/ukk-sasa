@@ -1,27 +1,17 @@
 @extends('layouts.app')
 
-@section('title', 'Siswa Dashboard')
-
-@section('header-actions')
-<a href="{{ route('aspirasi.create') }}" class="btn btn-primary">
-    <span>➕</span>
-    <span>Buat Aspirasi</span>
-</a>
-@endsection
+@section('title', 'Aspirasi Selesai')
 
 @section('content')
 
 <div class="space-y-6">
 
-   
-<!-- FILTER -->
-
-@if (auth()->user()->role === 'admin')
- <div class="card-dark p-6 mb-6">
-    <form method="GET" action="{{ route('aspirasi.index') }}">
+    <!-- FILTER -->
+ <!-- <div class="card-dark p-6 mb-6">
+    <form method="GET" action="{{ route('aspirasi.selesai') }}">
 
         <div class="flex items-end gap-4 w-full flex-wrap">
-            <!-- Kategori -->
+
             <div class="flex-1 min-w-[180px]">
                 <label class="block text-sm text-gray-400 mb-1">Kategori</label>
                 <select name="kategori" class="input-dark w-full py-3 px-4">
@@ -34,18 +24,6 @@
                 </select>
             </div>
 
-            <!-- Status -->
-            <div class="flex-1 min-w-[180px]">
-                <label class="block text-sm text-gray-400 mb-1">Status</label>
-                <select name="status" class="input-dark w-full py-3 px-4">
-                    <option value="">Semua Status</option>
-                    <option value="Menunggu" {{ request('status') == 'Menunggu' ? 'selected' : '' }}>Menunggu</option>
-                    <option value="Diproses" {{ request('status') == 'Diproses' ? 'selected' : '' }}>Diproses</option>
-                    <option value="Selesai" {{ request('status') == 'Selesai' ? 'selected' : '' }}>Selesai</option>
-                </select>
-            </div>
-
-            <!-- Bulan -->
             <div class="flex-1 min-w-[180px]">
                 <label class="block text-sm text-gray-400 mb-1">Bulan</label>
                 <select name="bulan" class="input-dark w-full py-3 px-4">
@@ -61,44 +39,22 @@
                 </select>
             </div>
 
-            <!-- Tanggal -->
-           <div class="flex gap-4 flex-1">
+            <div class="flex-1 min-w-[180px]">
+                <label class="block text-sm text-gray-400 mb-1">Tanggal</label>
+                <input 
+                    type="date"
+                    name="tanggal"
+                    value="{{ request('tanggal') }}"
+                    class="input-dark w-full py-3 px-4"
+                >
+            </div>
 
-    <!-- Tanggal Mulai -->
-    <div class="flex-1 min-w-[180px]">
-        <label class="block text-sm text-gray-400 mb-1">
-            Dari Tanggal
-        </label>
-        <input 
-            type="date"
-            name="tanggal_mulai"
-            value="{{ request('tanggal_mulai') }}"
-            class="input-dark w-full py-3 px-4"
-        >
-    </div>
-
-    <!-- Tanggal Selesai -->
-    <div class="flex-1 min-w-[180px]">
-        <label class="block text-sm text-gray-400 mb-1">
-            Sampai Tanggal
-        </label>
-        <input 
-            type="date"
-            name="tanggal_selesai"
-            value="{{ request('tanggal_selesai') }}"
-            class="input-dark w-full py-3 px-4"
-        >
-    </div>
-
-</div>
-
-            <!-- Button kanan -->
             <div class="flex gap-3 ml-auto">
                 <button type="submit" class="btn btn-primary px-6 py-3">
                     🔍 Filter
                 </button>
 
-                <a href="{{ route('aspirasi.index') }}" class="btn btn-secondary px-6 py-3">
+                <a href="{{ route('aspirasi.selesai') }}" class="btn btn-secondary px-6 py-3">
                     Reset
                 </a>
             </div>
@@ -106,21 +62,12 @@
         </div>
 
     </form>
-</div>
-        @endif
+</div> -->
 
     <!-- HEADER TABEL -->
     <div class="flex items-center justify-between">
-        <h2 class="text-lg font-semibold text-gray-100">Aspirasi Terbaru</h2>
-
-        @if (auth()->user()->role === 'siswa')
-        <a href="{{ route('aspirasi.create') }}" class="btn-primary inline-flex items-center gap-2">
-            <span>➕</span>
-            <span>Buat Aspirasi</span>
-        </a>
-        @endif
+        <h2 class="text-lg font-semibold text-gray-100">Daftar Aspirasi Selesai</h2>
     </div>
-
 
     <!-- TABEL -->
     <div class="card-dark overflow-auto">
@@ -180,31 +127,9 @@
                     <!-- STATUS -->
                     <td class="py-3 px-4 align-top">
 
-                        @if(strtolower($aspirasi->status) == 'menunggu')
-
-                        <span class="px-2 py-1 rounded-md text-sm bg-yellow-400 text-black">
-                            {{ $aspirasi->status }}
-                        </span>
-
-                        @elseif(strtolower($aspirasi->status) == 'selesai')
-
                         <span class="px-2 py-1 rounded-md text-sm bg-green-primary">
                             {{ $aspirasi->status }}
                         </span>
-
-                        @elseif(strtolower($aspirasi->status) == 'ditolak')
-
-                        <span class="px-2 py-1 rounded-md text-sm bg-red-500 text-white">
-                            {{ $aspirasi->status }}
-                        </span>
-
-                        @else
-
-                        <span class="px-2 py-1 rounded-md text-sm bg-gray-600">
-                            {{ $aspirasi->status }}
-                        </span>
-
-                        @endif
 
                     </td>
 
@@ -224,14 +149,6 @@
                             <button @click="open=!open"
                                 class="p-2 rounded-lg hover:bg-gray-700 transition">
                             
-
-                            @if (auth()->user()->role != 'admin' && $aspirasi->feedback_admin != null)
-                            <span class="px-2 py-1 rounded-md text-sm text-white">
-                                🔔
-                            </span>
-                            @endif
-                             
-
                                 <svg xmlns="http://www.w3.org/2000/svg"
                                     class="w-5 h-5 text-gray-300"
                                     fill="none"
@@ -251,23 +168,11 @@
                                 x-cloak
                                 class="absolute right-0 mt-2 w-48 bg-gray-800 border border-gray-700 rounded-lg shadow-lg overflow-hidden z-50 p-2 space-2">
 
-                                {{-- SISWA --}}
-                                @if (auth()->user()->role === 'siswa'
-                                    && $aspirasi->user_id === auth()->id()
-                                    && strtolower($aspirasi->status) == 'menunggu')
-
-                                    <a href="{{ route('aspirasi.edit', $aspirasi->id) }}"
-                                    class="dropdown-item">
-                                        ✏️ Edit
-                                    </a>
-                                     @endif
                                     <a href="{{ route('aspirasi.show', $aspirasi->id) }}"
                                     class="dropdown-item">
                                         👁️ Lihat
                                     </a>
                                
-
-
                                 {{-- ADMIN --}}
                                 @if (auth()->user()->role === 'admin')
 
@@ -277,18 +182,6 @@
                                     </a>
 
                                 @endif
-
-
-                                {{-- UMPAN BALIK SISWA --}}
-                                @if (auth()->user()->role === 'siswa')
-
-                                    <a href="{{ route('aktivitas.index', ['aspirasi_id' => $aspirasi->id]) }}"
-                                    class="dropdown-item">
-                                        💬 Lihat Balasan
-                                    </a>
-
-                                @endif
-
 
                                 @if (auth()->user()->role === 'admin')
                                 <form action="{{ route('archive.aspirasi', $aspirasi->id) }}"
@@ -311,7 +204,7 @@
 
                 <tr>
                     <td colspan="7" class="py-6 px-4 text-center text-gray-400">
-                        Belum ada aspirasi.
+                        Belum ada aspirasi selesai.
                     </td>
                 </tr>
 

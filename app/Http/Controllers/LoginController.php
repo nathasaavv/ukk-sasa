@@ -70,6 +70,7 @@ class LoginController extends Controller
 
             $request->validate([
                 'nis' => 'required',
+                'password' => 'required',
             ]);
 
             $user = User::where('nis', $request->nis)
@@ -88,7 +89,25 @@ class LoginController extends Controller
                 ])->withInput();
             }
 
-            Auth::login($user);
+            // Fallback for students without password
+            if (empty($user->password)) {
+                if ($request->password === $user->nis) {
+                    $user->password = \Illuminate\Support\Facades\Hash::make($request->password);
+                    $user->save();
+                } else {
+                    return back()->withErrors([
+                        'password' => 'Untuk login pertama kali, password adalah NIS Anda.'
+                    ])->withInput();
+                }
+            } else {
+                if (!\Illuminate\Support\Facades\Hash::check($request->password, $user->password)) {
+                    return back()->withErrors([
+                        'password' => 'Password salah.'
+                    ])->withInput();
+                }
+            }
+
+            Auth::login($user, $request->boolean('remember'));
             $request->session()->regenerate();
 
             return redirect()->route('dashboard.siswa')->with('success', 'Selamat datang, ' . $user->name . '!');

@@ -25,6 +25,7 @@
                 <option value="">-- Pilih Status --</option>
                 <option value="Menunggu" {{ $aspirasi->status == 'Menunggu' ? 'selected' : '' }}>⏳ Menunggu Review</option>
                 <option value="Diproses" {{ $aspirasi->status == 'Diproses' ? 'selected' : '' }}>🔄 Diproses</option>
+                <option value="Ditolak" {{ $aspirasi->status == 'Ditolak' ? 'selected' : '' }}>❌ Ditolak</option>
                 <option value="Selesai" {{ $aspirasi->status == 'Selesai' ? 'selected' : '' }}>✅ Selesai</option>
             </select>
             @error('status')

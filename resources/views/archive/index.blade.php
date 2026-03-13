@@ -125,7 +125,7 @@
 
                                     <button type="submit"
                                         class="dropdown-item text-red-400 w-full text-left text-sm">
-                                        Unarsipkan
+                                        Batal arsip
                                     </button>
                                 </form>
                         </div>
